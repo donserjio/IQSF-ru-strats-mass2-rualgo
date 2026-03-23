@@ -872,6 +872,8 @@ function ZoomableChart({
   rebaseOnZoom = false,
   yearlyTicks = false,
   yMin,
+  locale = "en-US",
+  liveBadgeText,
 }: {
   data: { date: string; value: number }[];
   color: string;
@@ -883,6 +885,8 @@ function ZoomableChart({
   rebaseOnZoom?: boolean;
   yearlyTicks?: boolean;
   yMin?: number;
+  locale?: string;
+  liveBadgeText?: string;
 }) {
   const [refLeft, setRefLeft] = useState<string | null>(null);
   const [refRight, setRefRight] = useState<string | null>(null);
@@ -955,8 +959,8 @@ function ZoomableChart({
               axisLine={{ stroke: "hsl(var(--border))" }}
               tickFormatter={(v: string) => {
                 const d = new Date(v);
-                if (isZoomed) return d.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
-                return yearlyTicks ? d.getFullYear().toString() : d.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
+                if (isZoomed) return d.toLocaleDateString(locale, { month: "short", year: "2-digit" });
+                return yearlyTicks ? d.getFullYear().toString() : d.toLocaleDateString(locale, { month: "short", year: "2-digit" });
               }}
               ticks={yearlyTicks && !isZoomed ? (() => {
                 const seen = new Set<number>();
@@ -983,7 +987,7 @@ function ZoomableChart({
               content={({ active, payload, label }: any) => {
                 if (!active || !payload?.length) return null;
                 const val = payload[0].value as number;
-                const dateStr = new Date(label).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+                const dateStr = new Date(label).toLocaleDateString(locale, { month: "long", day: "numeric", year: "numeric" });
                 const formatted = (val >= 0 ? "+" : "") + val.toFixed(valueDecimals) + valueSuffix;
                 const valColor = val >= 0 ? color : "#f87171";
                 return (
@@ -993,6 +997,7 @@ function ZoomableChart({
                       <span className="text-xs text-muted-foreground">{valueLabel}</span>
                       <span className="text-sm font-bold font-mono" style={{ color: valColor }}>{formatted}</span>
                     </div>
+                  {liveBadgeText && <div className="mt-2 text-[10px] text-muted-foreground/60">{liveBadgeText}</div>}
                   </div>
                 );
               }}
@@ -1052,11 +1057,13 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
                 color="#06b6d4"
                 gradientId="equityGrad"
                 valueSuffix="%"
-                valueLabel="Return"
+                valueLabel="Доходность"
                 valueDecimals={2}
                 height="h-[300px] sm:h-[400px]"
                 rebaseOnZoom
                 yearlyTicks
+                locale="ru-RU"
+                liveBadgeText="Реальный счёт · Обновляется ежедневно · API Binance"
               />
             )}
           </Card>
