@@ -579,7 +579,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
   );
 }
 
-function БиржиBar() {
+function ExchangesBar() {
   const exchanges = [
     { name: "Bybit", logo: "/exchanges/bybit.svg", scale: "scale-[1.8]", filter: "" },
     { name: "Binance", logo: "/exchanges/binance.svg", scale: "scale-[1.9]", filter: "" },
@@ -1113,7 +1113,7 @@ function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: bo
               Результаты
             </h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Годовой доходs & Key Statistics
+              Годовая доходность и ключевые показатели
             </p>
             <LiveDataBadge text="На основе верифицированных реальных результатов по API" />
           </div>
@@ -1439,7 +1439,7 @@ export default function Home() {
       <Navbar strategy={strategy} onStrategyChange={setStrategy} />
       <HeroSection stats={stats ?? undefined} sc={sc} />
 
-      <БиржиBar />
+      <ExchangesBar />
       <SocialProofBar />
 
       <EquityChartSection stats={stats ?? undefined} isLoading={isLoading} strategyKey={strategy} />
