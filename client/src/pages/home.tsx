@@ -988,10 +988,10 @@ function ZoomableChart({
               axisLine={false}
               tickFormatter={(v: number) => {
                 const abs = Math.abs(v);
-                if (abs >= 1000) return (v / 1000).toFixed(1) + "K" + valueSuffix;
+                if (abs >= 1000) return (v / 1000).toFixed(0) + "K" + valueSuffix;
                 return v.toFixed(0) + valueSuffix;
               }}
-              width={62}
+              width={50}
               domain={yMin !== undefined ? [yMin, "auto"] : ["auto", "auto"]}
               allowDataOverflow={yMin !== undefined}
             />
@@ -1045,8 +1045,8 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
   }, [equityRaw]);
 
   return (
-    <section id="equity" className="py-12 px-4 sm:px-6 relative" data-testid="section-equity">
-      <div className="max-w-7xl mx-auto">
+    <section id="equity" className="py-12 px-4 sm:px-6 relative overflow-hidden" data-testid="section-equity">
+      <div className="max-w-7xl mx-auto overflow-hidden">
         <AnimatedSection>
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
