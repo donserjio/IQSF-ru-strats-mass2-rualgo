@@ -521,7 +521,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
             <AnimatedSection delay={200}>
               <p className="text-base sm:text-lg md:text-xl text-muted-foreground/80 mb-8 max-w-lg leading-relaxed">
-                Algorithmic strategies trade crypto 24/7. Fully automated trading via API — funds always stay in your account.
+                Алгоритмические стратегии торгуют криптовалюту 24/7. Полностью автоматизированный трейдинг по API — средства всегда на вашем счёте.
               </p>
             </AnimatedSection>
 
@@ -624,7 +624,7 @@ function SocialProofBar() {
             "Прозрачная статистика",
             "Тысячи аккаунтов",
             "Leading Crypto Exchanges",
-            "No fund transfer",
+            "Без перевода средств",
             "Automated trading 24/7",
           ].map((text) => (
             <div key={text} className="flex items-center gap-3 text-sm sm:text-base text-white font-semibold pl-4 sm:pl-6">
@@ -1178,7 +1178,7 @@ const ACCESS_TERMS_BASE = [
   { label: "High-water mark", value: "Применяется" },
   { label: "Lock-up период", value: "Отсутствует" },
   { label: "Распределение комиссий", value: "Раз в квартал" },
-  { label: "Формат подключения", value: "Exchange API key" },
+  { label: "Формат подключения", value: "API-ключ через биржу" },
   { label: "Торговые активы", value: "10 торговых пар, 5 подходов" },
   { label: "Обеспечение", value: "USDT" },
   { label: "Биржи", value: "Binance, OKX, Bybit, Bitget, BingX" },
@@ -1452,7 +1452,7 @@ export default function Home() {
             <div className="text-center mb-10">
               <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Strategy Architecture</h2>
               <p className="text-muted-foreground text-sm max-w-2xl mx-auto">
-                15 trading systems on the 2 most liquid pairs — BTC and ETH. Fully automated execution with built-in risk management.
+                15 торговых систем на BTC и ETH. Полностью автоматизированное исполнение со встроенным контролем рисков.
               </p>
             </div>
           </AnimatedSection>
@@ -1461,7 +1461,7 @@ export default function Home() {
               {
                 num: "01",
                 title: "Диверсификация",
-                desc: "15 independent trading systems reduce dependence on a single market regime. Trading on BTC and ETH — both long and short.",
+                desc: "15 независимых систем снижают зависимость от одного режима. Торговля BTC и ETH — лонг и шорт.",
                 accent: "from-cyan-500/30 to-cyan-600/10",
               },
               {
@@ -1510,7 +1510,7 @@ export default function Home() {
           </AnimatedSection>
           <div className="flex flex-col sm:grid sm:grid-cols-3 gap-3 sm:gap-6">
             {[
-              { step: "01", title: "Откройте счёт на бирже", desc: "Binance, OKX, Bybit, Bitget, BingX. Minimum — $500." },
+              { step: "01", title: "Откройте счёт на бирже", desc: "Binance, OKX, Bybit, Bitget, BingX. Минимум — $500." },
               { step: "02", title: "Свяжитесь с нами", desc: "Telegram / WhatsApp. Подключение через API-ключ за 10 минут." },
               { step: "03", title: "Алгоритм работает за вас", desc: "24/7 торговля. 30% от прибыли. Без lock-up." },
             ].map((item) => (
@@ -1564,7 +1564,7 @@ export default function Home() {
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Ready to Connect?</h2>
           <p className="text-muted-foreground text-sm mb-8 max-w-lg mx-auto">
-            Contact our team directly. We'll walk you through the strategy, connection process, and onboarding.
+            Свяжитесь с нашей командой. Расскажем о стратегии, подключении и онбординге.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 mb-8 text-sm text-muted-foreground max-w-xs sm:max-w-md mx-auto">
             {[
@@ -1573,7 +1573,7 @@ export default function Home() {
               "Прозрачная статистика",
               "10-minute setup",
               "24/7 Support",
-              "No fund transfer",
+              "Без перевода средств",
             ].map((text) => (
               <div key={text} className="flex items-center gap-2 pl-2">
                 <CheckCircle className="w-4 h-4 text-cyan-400 shrink-0" />
