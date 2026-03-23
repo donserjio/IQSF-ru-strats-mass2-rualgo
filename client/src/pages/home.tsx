@@ -294,7 +294,7 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
   return (
     <nav
       data-testid="navbar"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 overflow-hidden ${
         scrolled
           ? "bg-background/80 backdrop-blur-xl border-b border-border/50"
           : "bg-transparent"
