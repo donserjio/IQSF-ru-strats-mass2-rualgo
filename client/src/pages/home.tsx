@@ -499,9 +499,9 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
       <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-transparent" />
       <div className="absolute top-1/4 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-cyan-500/10 rounded-full blur-[120px]" />
       <div className="absolute bottom-1/4 right-1/4 w-48 sm:w-80 h-48 sm:h-80 bg-blue-600/8 rounded-full blur-[100px]" />
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full overflow-hidden">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center overflow-hidden">
-          <div className="text-left">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          <div className="text-left min-w-0">
             <AnimatedSection>
               <div className="inline-flex items-center gap-2 mb-6 px-5 py-2 text-sm font-mono tracking-[0.15em] border border-cyan-500/30 text-cyan-400 rounded-full bg-cyan-500/5 uppercase">
                 <span className="relative flex h-2.5 w-2.5">
@@ -546,7 +546,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
             </AnimatedSection>
           </div>
 
-          <div>
+          <div className="min-w-0">
             <AnimatedSection delay={400}>
               <div className="rounded-2xl border border-border/30 bg-card/30 backdrop-blur-sm p-5 sm:p-6">
                 <div className="flex items-center justify-between mb-4 gap-2">
