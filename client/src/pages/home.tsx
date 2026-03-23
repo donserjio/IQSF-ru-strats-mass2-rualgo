@@ -657,7 +657,7 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
   const metricsCards = [
     {
       label: "Общая доходность",
-      value: getMetricValue(m, "Cumulative Return", getMetricValue(m, "Общая доходность", "---")),
+      value: getMetricValue(m, "Cumulative Return", getMetricValue(m, "Total Return", "---")),
     },
     {
       label: "Годовой доход",
@@ -669,7 +669,7 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
     },
     {
       label: "Макс. просадка",
-      value: getMetricValue(m, "Макс. просадка", "---"),
+      value: getMetricValue(m, "Max Drawdown", "---"),
     },
   ];
 
@@ -1098,12 +1098,12 @@ function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: bo
 
   const resultStats = [
     { label: "Прибыльные месяцы", value: getMetricValue(m, "Win Month", "—") },
-    { label: "Лучший месяц", value: getMetricValue(m, "Лучший месяц", "—") },
-    { label: "Худший месяц", value: getMetricValue(m, "Худший месяц", "—") },
+    { label: "Лучший месяц", value: getMetricValue(m, "Best Month", "—") },
+    { label: "Худший месяц", value: getMetricValue(m, "Worst Month", "—") },
     { label: "Ср. прибыльный месяц", value: getMetricValue(m, "Avg. Up Month", "—") },
     { label: "Ср. убыточный месяц", value: getMetricValue(m, "Avg. Down Month", "—") },
-    { label: "Лучший год", value: getMetricValue(m, "Лучший год", "—") },
-    { label: "Худший год", value: getMetricValue(m, "Худший год", "—") },
+    { label: "Лучший год", value: getMetricValue(m, "Best Year", "—") },
+    { label: "Худший год", value: getMetricValue(m, "Worst Year", "—") },
     { label: "Прибыльные годы", value: getMetricValue(m, "Win Year", "—") },
   ];
 
