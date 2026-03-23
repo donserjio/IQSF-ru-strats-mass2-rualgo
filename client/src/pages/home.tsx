@@ -71,7 +71,7 @@ const STRATEGIES: Record<string, StrategyConfig> = {
   basket50: {
     key: "basket50",
     apiKey: "basket50",
-    label: "Algo Momentum",
+    label: "Basket 50",
     pairs: ["BTC/USDT", "ETH/USDT"],
     approachShort: "Мультисистемный количественный подход",
     approachFull: "комбинация нескольких количественных моделей",
@@ -86,7 +86,7 @@ const STRATEGIES: Record<string, StrategyConfig> = {
   basket70tf: {
     key: "basket70tf",
     apiKey: "basket70tf",
-    label: "Algo Trend",
+    label: "Basket 70 TF",
     pairs: ["BTC/USDT", "ETH/USDT"],
     approachShort: "Трендследящий подход с моментум-фильтрами",
     approachFull: "трендследящая торговля с использованием эффекта моментума",
@@ -271,8 +271,8 @@ const NAV_ITEMS = [
 ];
 
 const STRATEGY_OPTIONS: { key: StrategyKey; label: string }[] = [
-  { key: "basket50", label: "Algo Momentum" },
-  { key: "basket70tf", label: "Algo Trend" },
+  { key: "basket50", label: "Basket 50" },
+  { key: "basket70tf", label: "Basket 70 TF" },
 ];
 
 function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrategyChange: (k: StrategyKey) => void }) {
@@ -1386,13 +1386,15 @@ function LegalDisclaimerModal() {
 }
 
 const STRATEGY_SLUG_MAP: Record<string, StrategyKey> = {
+  "basket-50": "basket50",
+  "basket-70-tf": "basket70tf",
   "algo-momentum": "basket50",
   "algo-trend": "basket70tf",
 };
 
 const STRATEGY_URL_MAP: Record<StrategyKey, string> = {
-  basket50: "algo-momentum",
-  basket70tf: "algo-trend",
+  basket50: "basket-50",
+  basket70tf: "basket-70-tf",
 };
 
 function getStrategyFromPath(): StrategyKey {
