@@ -529,7 +529,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
               <div className="flex flex-nowrap gap-3 w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="flex-1 sm:flex-none bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold px-8 py-6 text-base rounded-xl cta-pulse transition-all"
+                  className="flex-1 sm:flex-none bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold px-5 py-4 sm:px-8 sm:py-6 text-sm sm:text-base rounded-xl cta-pulse transition-all"
                   onClick={() => window.open("https://t.me/etheremax", "_blank")}
                 >
                   Подключиться
@@ -537,7 +537,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="flex-1 sm:flex-none border-border/50 text-foreground bg-transparent px-8 py-6 text-base"
+                  className="flex-1 sm:flex-none border-border/50 text-foreground bg-transparent px-5 py-4 sm:px-8 sm:py-6 text-sm sm:text-base"
                   onClick={() => document.querySelector("#equity")?.scrollIntoView({ behavior: "smooth" })}
                 >
                   Результаты <ArrowRight className="w-4 h-4 ml-2" />
@@ -592,7 +592,7 @@ function ExchangesBar() {
       <div className="max-w-5xl mx-auto text-center">
         <AnimatedSection>
           <p className="text-lg sm:text-xl text-white font-semibold mb-8 tracking-wide">
-            Our partner exchanges
+            Наши партнёрские биржи
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             {exchanges.map((ex) => (
@@ -1332,39 +1332,39 @@ function LegalDisclaimerModal() {
         </div>
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4 text-sm text-muted-foreground leading-relaxed custom-scrollbar">
           <div>
-            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">For informational purposes only</h3>
+            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Только информационные цели</h3>
             <p>Данный сайт предоставляется в информационных целях. Доступ только для квалифицированных клиентов.</p>
           </div>
           <div>
-            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Not investment advice</h3>
+            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Не является инвестиционным советом</h3>
             <p>Ничто на сайте не является инвестиционным, юридическим или налоговым советом.</p>
           </div>
           <div>
-            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Risk of loss</h3>
+            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Риск потерь</h3>
             <p>Алгоритмическая торговля сопряжена со значительными рисками, включая возможную потерю всего капитала.</p>
           </div>
           <div>
-            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Past performance</h3>
+            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Прошлые результаты</h3>
             <p>Прошлые результаты не являются показателем будущих. Данные основаны на реальной торговле.</p>
           </div>
           <div>
-            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">No guarantees</h3>
+            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Отсутствие гарантий</h3>
             <p>Нет гарантии достижения целей. Целевые доходности — ориентиры, не гарантии.</p>
           </div>
           <div>
-            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Exchange and counterparty risks</h3>
+            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Биржевые и контрагентские риски</h3>
             <p>Средства клиента на его субаккаунте. УК имеет только торговый API-доступ. Контрагентский риск биржи оценивается клиентом.</p>
           </div>
           <div>
-            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Forward-looking statements</h3>
+            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Прогнозные заявления</h3>
             <p>Сайт может содержать прогнозные заявления, подверженные рискам и неопределённостям.</p>
           </div>
           <div>
-            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Client-initiated access</h3>
+            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Доступ по инициативе клиента</h3>
             <p>Содержимое доступно только лицам, обратившимся по собственной инициативе.</p>
           </div>
           <div>
-            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Restricted jurisdictions</h3>
+            <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Ограниченные юрисдикции</h3>
             <p>Информация не предназначена для юрисдикций, где это противоречит законодательству.</p>
           </div>
         </div>
@@ -1380,7 +1380,7 @@ function LegalDisclaimerModal() {
             onClick={() => setAccepted(true)}
             data-testid="button-accept-disclaimer"
           >
-            I Agree
+            Принимаю
           </Button>
         </div>
       </div>
@@ -1482,7 +1482,7 @@ export default function Home() {
               {
                 num: "04",
                 title: "Адаптивность",
-                desc: "15 strategies use momentum, mean-reversion, and volatility clustering — approaches that work across different market phases.",
+                desc: "15 стратегий используют моментум, возврат к среднему и кластеризацию волатильности — подходы для разных фаз рынка.",
                 accent: "from-emerald-500/30 to-emerald-600/10",
               },
             ].map((item, i) => (
