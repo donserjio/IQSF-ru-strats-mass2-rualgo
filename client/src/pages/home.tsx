@@ -35,6 +35,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
+  ReferenceArea,
 } from "recharts";
 
 interface StatsData {
@@ -859,6 +860,157 @@ function ChartLiveBadge({ text }: { text: string }) {
   );
 }
 
+
+function ZoomableChart({
+  data,
+  color,
+  gradientId,
+  valueSuffix,
+  valueLabel,
+  valueDecimals,
+  height,
+  rebaseOnZoom = false,
+  yearlyTicks = false,
+  yMin,
+}: {
+  data: { date: string; value: number }[];
+  color: string;
+  gradientId: string;
+  valueSuffix: string;
+  valueLabel: string;
+  valueDecimals: number;
+  height: string;
+  rebaseOnZoom?: boolean;
+  yearlyTicks?: boolean;
+  yMin?: number;
+}) {
+  const [refLeft, setRefLeft] = useState<string | null>(null);
+  const [refRight, setRefRight] = useState<string | null>(null);
+  const [zoomedData, setZoomedData] = useState(data);
+
+  useEffect(() => {
+    setZoomedData(data);
+  }, [data]);
+
+  const isZoomed = zoomedData.length < data.length;
+
+  const handleMouseDown = (e: any) => {
+    if (e?.activeLabel) setRefLeft(e.activeLabel);
+  };
+
+  const handleMouseMove = (e: any) => {
+    if (refLeft && e?.activeLabel) setRefRight(e.activeLabel);
+  };
+
+  const handleMouseUp = () => {
+    if (refLeft && refRight && refLeft !== refRight) {
+      const leftIdx = data.findIndex((d) => d.date === refLeft);
+      const rightIdx = data.findIndex((d) => d.date === refRight);
+      const [from, to] = leftIdx < rightIdx ? [leftIdx, rightIdx] : [rightIdx, leftIdx];
+      if (to - from > 1) {
+        const sliced = data.slice(from, to + 1);
+        if (rebaseOnZoom && sliced.length > 0) {
+          const baseMul = 1 + sliced[0].value / 100;
+          setZoomedData(sliced.map((d) => ({ ...d, value: parseFloat((((1 + d.value / 100) / baseMul - 1) * 100).toFixed(4)) })));
+        } else {
+          setZoomedData(sliced);
+        }
+      }
+    }
+    setRefLeft(null);
+    setRefRight(null);
+  };
+
+  const handleReset = () => setZoomedData(data);
+
+  return (
+    <div>
+      {isZoomed && (
+        <div className="flex justify-end mb-2">
+          <Button variant="outline" size="sm" className="text-xs border-border/50" onClick={handleReset}>
+            Reset Zoom
+          </Button>
+        </div>
+      )}
+      <div className={height}>
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart
+            data={zoomedData}
+            margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+          >
+            <defs>
+              <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor={color} stopOpacity={0.3} />
+                <stop offset="95%" stopColor={color} stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" vertical={yearlyTicks} />
+            <XAxis
+              dataKey="date"
+              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11, dy: 10 }}
+              tickLine={false}
+              axisLine={{ stroke: "hsl(var(--border))" }}
+              tickFormatter={(v: string) => {
+                const d = new Date(v);
+                if (isZoomed) return d.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
+                return yearlyTicks ? d.getFullYear().toString() : d.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
+              }}
+              ticks={yearlyTicks && !isZoomed ? (() => {
+                const seen = new Set<number>();
+                return zoomedData.filter((d) => {
+                  const y = new Date(d.date).getFullYear();
+                  if (seen.has(y)) return false;
+                  seen.add(y);
+                  return true;
+                }).map((d) => d.date);
+              })() : undefined}
+              interval={yearlyTicks && !isZoomed ? 0 : Math.floor(zoomedData.length / 8)}
+            />
+            <YAxis
+              type="number"
+              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
+              tickLine={false}
+              axisLine={false}
+              tickFormatter={(v: number) => v.toFixed(0) + valueSuffix}
+              width={55}
+              domain={yMin !== undefined ? [yMin, "auto"] : ["auto", "auto"]}
+              allowDataOverflow={yMin !== undefined}
+            />
+            <Tooltip
+              content={({ active, payload, label }: any) => {
+                if (!active || !payload?.length) return null;
+                const val = payload[0].value as number;
+                const dateStr = new Date(label).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+                const formatted = (val >= 0 ? "+" : "") + val.toFixed(valueDecimals) + valueSuffix;
+                const valColor = val >= 0 ? color : "#f87171";
+                return (
+                  <div className="bg-card border border-border rounded-lg px-4 py-3 shadow-xl min-w-[200px]">
+                    <p className="text-sm font-bold text-foreground mb-2">{dateStr}</p>
+                    <div className="flex items-center justify-between gap-6">
+                      <span className="text-xs text-muted-foreground">{valueLabel}</span>
+                      <span className="text-sm font-bold font-mono" style={{ color: valColor }}>{formatted}</span>
+                    </div>
+                  </div>
+                );
+              }}
+            />
+            <Area type="monotone" dataKey="value" stroke={color} strokeWidth={1.5} fill={"url(#" + gradientId + ")"} dot={false} activeDot={{ r: 4, fill: color, stroke: "#0a0e27", strokeWidth: 2 }} />
+            {refLeft && refRight && (
+              <ReferenceArea x1={refLeft} x2={refRight} strokeOpacity={0.2} stroke="rgba(6,182,212,0.3)" fill="rgba(6,182,212,0.05)" fillOpacity={1} />
+            )}
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+      {!isZoomed && (
+        <p className="text-[10px] text-muted-foreground/40 text-center mt-2">Click and drag on chart to zoom in</p>
+      )}
+    </div>
+  );
+}
+
 function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsData; isLoading: boolean; strategyKey: StrategyKey }) {
   const equityRaw = stats?.equity ?? [];
   const [filteredData, setFilteredData] = useState(equityRaw);
@@ -895,67 +1047,17 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
             ) : filteredData.length === 0 ? (
               <div className="h-[300px] flex items-center justify-center text-muted-foreground text-sm">Нет данных</div>
             ) : (
-              <div className="h-[300px] sm:h-[400px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={filteredData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="equityGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.3} />
-                        <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
-                    <XAxis
-                      dataKey="date"
-                      tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
-                      tickLine={false}
-                      axisLine={{ stroke: "hsl(var(--border))" }}
-                      tickFormatter={(v: string) => {
-                        const d = new Date(v);
-                        if (filteredData.length <= 90) return d.toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
-                        if (filteredData.length <= 365) return d.toLocaleDateString("ru-RU", { month: "short", year: "2-digit" });
-                        return d.getFullYear().toString();
-                      }}
-                      interval={Math.max(1, Math.floor(filteredData.length / 8))}
-                    />
-                    <YAxis
-                      tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
-                      tickLine={false}
-                      axisLine={false}
-                      tickFormatter={(v: number) => v.toFixed(0) + "%"}
-                      width={45}
-                    />
-                    <Tooltip
-                      content={({ active, payload, label }: any) => {
-                        if (!active || !payload?.length) return null;
-                        const val = payload[0].value as number;
-                        const dateStr = new Date(label).toLocaleDateString("ru-RU", { month: "long", day: "numeric", year: "numeric" });
-                        return (
-                          <div className="bg-card border border-border rounded-lg px-4 py-3 shadow-xl min-w-[200px]">
-                            <p className="text-sm font-bold text-foreground mb-1">{dateStr}</p>
-                            <div className="flex items-center justify-between gap-4">
-                              <span className="text-xs text-muted-foreground">Доходность</span>
-                              <span className={`text-sm font-bold font-mono ${val >= 0 ? "text-cyan-400" : "text-red-400"}`}>
-                                {val >= 0 ? "+" : ""}{val.toFixed(2)}%
-                              </span>
-                            </div>
-                            <ChartLiveBadge text="Реальный счёт" />
-                          </div>
-                        );
-                      }}
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="value"
-                      stroke="#06b6d4"
-                      strokeWidth={1.5}
-                      fill="url(#equityGrad)"
-                      dot={false}
-                      activeDot={{ r: 4, fill: "#06b6d4", stroke: "#0a0e27", strokeWidth: 2 }}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
+              <ZoomableChart
+                data={filteredData}
+                color="#06b6d4"
+                gradientId="equityGrad"
+                valueSuffix="%"
+                valueLabel="Return"
+                valueDecimals={2}
+                height="h-[300px] sm:h-[400px]"
+                rebaseOnZoom
+                yearlyTicks
+              />
             )}
           </Card>
         </AnimatedSection>
