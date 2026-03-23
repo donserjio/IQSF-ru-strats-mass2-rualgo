@@ -978,8 +978,12 @@ function ZoomableChart({
               tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(v: number) => v.toFixed(0) + valueSuffix}
-              width={55}
+              tickFormatter={(v: number) => {
+                const abs = Math.abs(v);
+                if (abs >= 1000) return (v / 1000).toFixed(1) + "K" + valueSuffix;
+                return v.toFixed(0) + valueSuffix;
+              }}
+              width={62}
               domain={yMin !== undefined ? [yMin, "auto"] : ["auto", "auto"]}
               allowDataOverflow={yMin !== undefined}
             />
