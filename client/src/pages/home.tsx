@@ -995,6 +995,8 @@ function ZoomableChart({
               allowDataOverflow={yMin !== undefined}
             />
             <Tooltip
+              wrapperStyle={{ zIndex: 100, overflow: "visible" }}
+              allowEscapeViewBox={{ x: false, y: false }}
               content={({ active, payload, label }: any) => {
                 if (!active || !payload?.length) return null;
                 const val = payload[0].value as number;
