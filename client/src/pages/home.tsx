@@ -724,6 +724,13 @@ function ChartPeriodFilter({
   const [active, setActive] = useState<string>("all");
   const [range, setRange] = useState<DateRange | undefined>(undefined);
   const [calOpen, setCalOpen] = useState(false);
+
+  const rangeLabel = useMemo(() => {
+    if (!range?.from) return "";
+    const fmt = (d: Date) => d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    if (range.to) return fmt(range.from) + " — " + fmt(range.to);
+    return "From " + fmt(range.from);
+  }, [range]);
   const [leftMonth, setLeftMonth] = useState<Date | undefined>(undefined);
   const [rightMonth, setRightMonth] = useState<Date | undefined>(undefined);
 
@@ -769,6 +776,7 @@ function ChartPeriodFilter({
 
   function handleRangeSelect(r: DateRange | undefined) {
     setRange(r);
+    if (r?.from) setActive("custom");
     if (!r) { onFilter(allData); return; }
     const from = r.from ? toLocalISO(r.from) : null;
     const to = r.to ? toLocalISO(r.to) : null;
@@ -812,7 +820,7 @@ function ChartPeriodFilter({
             data-testid="button-filter-calendar"
           >
             <CalendarRange className="w-3 h-3" />
-            Период
+            {active === "custom" && range?.from ? rangeLabel : "Период"}
           </button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0 bg-card border-border/50" align="start">
