@@ -1002,7 +1002,7 @@ function ZoomableChart({
                 const formatted = (val >= 0 ? "+" : "") + val.toFixed(valueDecimals) + valueSuffix;
                 const valColor = val >= 0 ? color : "#f87171";
                 return (
-                  <div className="bg-card border border-border rounded-lg px-4 py-3 shadow-xl min-w-[200px]">
+                  <div className="bg-card border border-border rounded-lg px-3 py-2 sm:px-4 sm:py-3 shadow-xl min-w-[140px] max-w-[calc(100vw-32px)]">
                     <p className="text-sm font-bold text-foreground mb-2">{dateStr}</p>
                     <div className="flex items-center justify-between gap-6">
                       <span className="text-xs text-muted-foreground">{valueLabel}</span>
