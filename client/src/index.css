@@ -416,3 +416,12 @@ html, body {
   overflow-x: hidden;
   max-width: 100vw;
 }
+
+
+/* Fix tooltip overflow on mobile */
+.recharts-tooltip-wrapper {
+  pointer-events: none !important;
+}
+.recharts-wrapper {
+  overflow: hidden !important;
+}
