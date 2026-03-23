@@ -63,7 +63,7 @@ interface StrategyConfig {
   riskDesc: string;
   execDesc: string;
   strategyType: string;
-  holdingПериод: string;
+  holdingPeriod: string;
   capacity: string;
 }
 
@@ -73,14 +73,14 @@ const STRATEGIES: Record<string, StrategyConfig> = {
     apiKey: "basket50",
     label: "Algo Momentum",
     pairs: ["BTC/USDT", "ETH/USDT"],
-    approachShort: "Multi-system quantitative approach",
-    approachFull: "a combination of multiple quantitative models",
-    desc: "A portfolio of 15 independent algorithmic strategies on the 2 most liquid crypto pairs — BTC and ETH. Each model uses its own entry/exit logic — from short-term momentum to mean-reversion. The combination smooths the equity curve and reduces dependence on a single market regime.",
-    archDesc: "The system combines 15 independent algorithms on BTC and ETH. Trading is conducted both long and short. Диверсификация по стратегиям обеспечивает стабильность в любых рыночных условиях — от трендов до боковиков.",
-    riskDesc: "Each position opens with fixed risk. Stop-losses and take-profits are calculated by the algorithm based on current volatility. During abnormal moves, the system automatically reduces exposure.",
+    approachShort: "Мультисистемный количественный подход",
+    approachFull: "комбинация нескольких количественных моделей",
+    desc: "Портфель из 15 независимых алгоритмических стратегий на 2 самых ликвидных криптовалютных парах — BTC и ETH. Каждая модель использует собственную логику входа и выхода — от краткосрочного моментума до возврата к среднему. Комбинация подходов сглаживает кривую доходности и снижает зависимость от одного рыночного режима.",
+    archDesc: "Система объединяет 15 независимых алгоритмов на BTC и ETH. Торговля ведётся как в лонг, так и в шорт. Диверсификация по стратегиям обеспечивает стабильность в любых рыночных условиях — от трендов до боковиков.",
+    riskDesc: "Каждая позиция открывается с фиксированным риском. Стоп-лоссы и тейк-профиты рассчитываются алгоритмом на основе текущей волатильности. В периоды аномальных движений система автоматически снижает экспозицию.",
     execDesc: "Полностью автоматизированное исполнение 24/7. Алгоритм выбирает тип ордера в зависимости от ликвидности и спреда. Работа без участия человека исключает эмоциональный фактор.",
-    strategyType: "Quantitative, systematic",
-    holdingПериод: "< 3 days",
+    strategyType: "Количественный, системный",
+    holdingPeriod: "< 3 дней",
     capacity: "$200M",
   },
   basket70tf: {
@@ -88,14 +88,14 @@ const STRATEGIES: Record<string, StrategyConfig> = {
     apiKey: "basket70tf",
     label: "Algo Trend",
     pairs: ["BTC/USDT", "ETH/USDT"],
-    approachShort: "Trend-following with momentum filters",
-    approachFull: "trend-following using the momentum effect",
-    desc: "A portfolio of 15 trend-following algorithms on BTC and ETH focused on directional market moves. Strategies hold positions longer to capture large price impulses. Built-in volatility filters eliminate false signals.",
-    archDesc: "15 predominantly trend-following models on BTC and ETH with extended holding periods. Momentum and volatility clustering allow capturing strong directional moves while staying out during sideways markets.",
-    riskDesc: "Fixed risk per trade with no loss averaging. Positions are closed at stop-loss or a trailing stop adapted to current volatility.",
-    execDesc: "Entries and exits are executed via market or limit orders depending on order book depth and current spread.",
-    strategyType: "Trend-following, momentum, systematic",
-    holdingПериод: "< 14 days",
+    approachShort: "Трендследящий подход с моментум-фильтрами",
+    approachFull: "трендследящая торговля с использованием эффекта моментума",
+    desc: "Портфель из 15 трендовых алгоритмов на BTC и ETH, ориентированных на направленные движения рынка. Стратегии удерживают позиции дольше для захвата крупных ценовых импульсов. Встроенные фильтры волатильности отсеивают ложные сигналы.",
+    archDesc: "15 преимущественно трендовых моделей на BTC и ETH с увеличенным периодом удержания. Комбинация моментума и кластеризации волатильности позволяет захватывать сильные направленные движения и оставаться вне рынка в боковиках.",
+    riskDesc: "Фиксированный риск на каждую сделку без усреднения убытков. Позиции закрываются по стоп-лоссу или трейлинг-стопу, адаптированному к текущей волатильности.",
+    execDesc: "Входы и выходы исполняются через рыночные или лимитные ордера в зависимости от глубины стакана и текущего спреда.",
+    strategyType: "Трендовый, моментумный, системный",
+    holdingPeriod: "< 14 дней",
     capacity: "$350M",
   },
 };
@@ -265,8 +265,8 @@ function ParticleCanvas() {
 
 const NAV_ITEMS = [
   { label: "Результаты", href: "#results" },
-  { label: "Metrics", href: "#metrics" },
-  { label: "How It Works", href: "#how-it-works" },
+  { label: "Показатели", href: "#metrics" },
+  { label: "Как это работает", href: "#how-it-works" },
   { label: "FAQ", href: "#faq" },
 ];
 
@@ -640,9 +640,9 @@ function SocialProofBar() {
 
 function localizeDate(s: string): string {
   const months: Record<string, string> = {
-    January: "January", February: "February", March: "March", April: "April",
-    May: "May", June: "June", July: "July", August: "August",
-    September: "September", October: "October", November: "November", December: "December",
+    January: "Январь", February: "Февраль", March: "Март", April: "Апрель",
+    May: "Май", June: "Июнь", July: "Июль", August: "Август",
+    September: "Сентябрь", October: "Октябрь", November: "Ноябрь", December: "Декабрь",
   };
   return s.replace(/(\w+)\s+(\d+),\s+(\d+)/g, (_m, mon, day, year) => `${day} ${months[mon] ?? mon} ${year}`);
 }
@@ -656,7 +656,7 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
   const m = stats?.metrics;
   const metricsCards = [
     {
-      label: "Total Return",
+      label: "Общая доходность",
       value: getMetricValue(m, "Cumulative Return", getMetricValue(m, "Total Return", "---")),
     },
     {
@@ -668,7 +668,7 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
       value: getMetricValue(m, "Sharpe", "---"),
     },
     {
-      label: "Max Drawdown",
+      label: "Макс. просадка",
       value: getMetricValue(m, "Max Drawdown", "---"),
     },
   ];
@@ -684,7 +684,7 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
               {stats?.dateRange ? `Период: ${localizeDate(stats.dateRange)}` : "Loading data..."}
             </p>
-            <LiveDataBadge text="Live Trading Account" />
+            <LiveDataBadge text="Реальный торговый счёт" />
           </div>
         </AnimatedSection>
 
@@ -709,7 +709,7 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
   );
 }
 
-function ChartПериодFilter({
+function ChartPeriodFilter({
   allData,
   onFilter,
   rebaseOnFilter = false,
@@ -1046,7 +1046,7 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
         <AnimatedSection>
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              Strategy Результаты
+              Результаты стратегии
             </h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
               Рост капитала и эквити стратегии
@@ -1060,7 +1060,7 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
             <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
               <h3 className="text-sm font-semibold text-foreground">Кривая доходности</h3>
               {equityRaw.length > 0 && (
-                <ChartПериодFilter allData={equityRaw} onFilter={setFilteredData} rebaseOnFilter />
+                <ChartPeriodFilter allData={equityRaw} onFilter={setFilteredData} rebaseOnFilter />
               )}
             </div>
             {isLoading ? (
@@ -1089,19 +1089,19 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
   );
 }
 
-function РезультатыSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
+function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
   const m = stats?.metrics;
   const eoyReturns = stats?.eoyReturns ?? [];
 
   const resultStats = [
-    { label: "Profitable Months", value: getMetricValue(m, "Win Month", "—") },
-    { label: "Best Month", value: getMetricValue(m, "Best Month", "—") },
-    { label: "Worst Month", value: getMetricValue(m, "Worst Month", "—") },
-    { label: "Avg. Winning Month", value: getMetricValue(m, "Avg. Up Month", "—") },
-    { label: "Avg. Losing Month", value: getMetricValue(m, "Avg. Down Month", "—") },
-    { label: "Best Year", value: getMetricValue(m, "Best Year", "—") },
-    { label: "Worst Year", value: getMetricValue(m, "Worst Year", "—") },
-    { label: "Profitable Years", value: getMetricValue(m, "Win Year", "—") },
+    { label: "Прибыльные месяцы", value: getMetricValue(m, "Win Month", "—") },
+    { label: "Лучший месяц", value: getMetricValue(m, "Best Month", "—") },
+    { label: "Худший месяц", value: getMetricValue(m, "Worst Month", "—") },
+    { label: "Ср. прибыльный месяц", value: getMetricValue(m, "Avg. Up Month", "—") },
+    { label: "Ср. убыточный месяц", value: getMetricValue(m, "Avg. Down Month", "—") },
+    { label: "Лучший год", value: getMetricValue(m, "Best Year", "—") },
+    { label: "Худший год", value: getMetricValue(m, "Worst Year", "—") },
+    { label: "Прибыльные годы", value: getMetricValue(m, "Win Year", "—") },
   ];
 
   return (
@@ -1179,7 +1179,7 @@ const ACCESS_TERMS_BASE = [
   { label: "Lock-up Период", value: "Отсутствует" },
   { label: "Распределение комиссий", value: "Раз в квартал" },
   { label: "Формат подключения", value: "API-ключ через биржу" },
-  { label: "Торговые активы", value: "10 trading pairs, 5 approaches" },
+  { label: "Торговые активы", value: "10 торговых пар, 5 подходов" },
   { label: "Обеспечение", value: "USDT" },
   { label: "Биржи", value: "Binance, OKX, Bybit, Bitget, BingX" },
 ];
@@ -1222,40 +1222,40 @@ function ExchangeLogos({ strategyKey }: { strategyKey: string }) {
 function buildFaqItems(sc: StrategyConfig) {
   return [
     {
-      q: "How does the service work?",
-      a: `The management company connects to the client's exchange sub-account via API and manages trading under the ${sc.label} strategy. The systematic portfolio based on ${sc.approachFull} operates continuously and fully automatically — without discretionary intervention. Your capital always remains in your exchange account.`,
+      q: "Как работает сервис?",
+      a: `Управляющая компания подключается к субаккаунту клиента на бирже через API и управляет торговлей по стратегии ${sc.label}. Системный портфель на основе ${sc.approachFull} работает непрерывно и полностью автоматически — без дискреционного вмешательства. Ваш капитал всегда остаётся на вашем биржевом счёте.`,
     },
     {
-      q: "Where are my funds held?",
-      a: "Your capital remains in your exchange sub-account (OKX, Binance, or any other). The management company receives trading API access only — no withdrawal or transfer permissions. You retain full control over your funds.",
+      q: "Где хранятся мои средства?",
+      a: "Ваш капитал остаётся на вашем субаккаунте биржи (OKX, Binance или любой другой). Управляющая компания получает только торговый API-доступ — без прав на вывод или перевод средств. Вы сохраняете полный контроль над своими деньгами.",
     },
     {
-      q: "How do I get started?",
-      a: "Contact us via Telegram to start onboarding. We'll help you create an API key (no withdrawal permissions, trading only) and connect your account. The process takes less than 10 minutes.",
+      q: "Как начать?",
+      a: "Свяжитесь с нами через Telegram для начала подключения. Мы поможем создать API-ключ (без прав на вывод, только торговля) и подключить ваш аккаунт. Процесс занимает менее 10 минут.",
     },
     {
-      q: "What is the minimum allocation?",
-      a: "Minimum allocation — $500. We support all major cryptocurrency exchanges.",
+      q: "Какая минимальная сумма подключения?",
+      a: "Минимальная сумма подключения — $500. Мы поддерживаем все основные криптовалютные биржи.",
     },
     {
-      q: "What fees apply?",
-      a: "Management fee is 0%, plus a 30% performance fee with high-water mark. Fees are calculated and distributed quarterly. No lock-up period.",
+      q: "Какие комиссии?",
+      a: "Комиссия за управление — 0%, плюс 30% от прибыли с high-water mark. Комиссии рассчитываются и распределяются ежеквартально. Без периода блокировки.",
     },
     {
-      q: "Which exchanges are supported?",
-      a: "Binance, OKX, Bybit, Bitget, BingX. Connection via exchange API key.",
+      q: "Какие биржи поддерживаются?",
+      a: "Binance, OKX, Bybit, Bitget, BingX. Подключение через API-ключ биржи.",
     },
     {
-      q: "What assets are traded?",
-      a: "Strategies trade perpetual futures on BTC and ETH.",
+      q: "Какими активами торгует стратегия?",
+      a: "Стратегии торгуют бессрочными фьючерсами на BTC и ETH.",
     },
     {
-      q: "What risk management measures are used?",
-      a: `Each trade opens with fixed risk. Stop-losses and take-profits are calibrated automatically based on current volatility. During abnormal volatility, the system reduces activity. 24/7 automatic monitoring.`,
+      q: "Какие меры управления рисками применяются?",
+      a: `Каждая сделка открывается с фиксированным риском. Стоп-лоссы и тейк-профиты калибруются автоматически на основе текущей волатильности. В периоды аномальной волатильности система снижает активность. Автоматический мониторинг 24/7.`,
     },
     {
-      q: "Is the performance data from backtesting or live trading?",
-      a: "The data presented on the website is based on live algorithmic trading results. Прошлые результаты is not indicative of future results.",
+      q: "Данные о результатах — это бэктест или реальная торговля?",
+      a: "Данные, представленные на сайте, основаны на результатах реальной алгоритмической торговли. Прошлые результаты не гарантируют будущих.",
     },
   ];
 }
@@ -1444,7 +1444,7 @@ export default function Home() {
 
       <EquityChartSection stats={stats ?? undefined} isLoading={isLoading} strategyKey={strategy} />
       <MetricsSection stats={stats ?? undefined} isLoading={isLoading} strategyKey={strategy} />
-      <РезультатыSection stats={stats ?? undefined} isLoading={isLoading} />
+      <ResultsSection stats={stats ?? undefined} isLoading={isLoading} />
 
       <section className="py-12 px-4 sm:px-6 relative" data-testid="section-strategy">
         <div className="max-w-5xl mx-auto">
@@ -1467,13 +1467,13 @@ export default function Home() {
               {
                 num: "02",
                 title: "Контроль рисков",
-                desc: "Each position is size-limited with a stop-loss. Overall portfolio risk is controlled at the correlation level between strategies.",
+                desc: "Каждая позиция ограничена по размеру со стоп-лоссом. Общий риск портфеля контролируется на уровне корреляции между стратегиями.",
                 accent: "from-blue-500/30 to-blue-600/10",
               },
               {
                 num: "03",
                 title: "Автоматизация",
-                desc: "The algorithm executes trades 24/7 without human involvement. Decisions are based on mathematical models.",
+                desc: "Алгоритм исполняет сделки 24/7 без участия человека. Решения основаны на математических моделях.",
                 accent: "from-violet-500/30 to-violet-600/10",
               },
               {
@@ -1511,7 +1511,7 @@ export default function Home() {
           <div className="flex flex-col sm:grid sm:grid-cols-3 gap-3 sm:gap-6">
             {[
               { step: "01", title: "Откройте счёт на бирже", desc: "Binance, OKX, Bybit, Bitget, BingX. Minimum — $500." },
-              { step: "02", title: "Свяжитесь с нами", desc: "Telegram / WhatsApp. Connection via API key in 10 minutes." },
+              { step: "02", title: "Свяжитесь с нами", desc: "Telegram / WhatsApp. Подключение через API-ключ за 10 минут." },
               { step: "03", title: "Алгоритм работает за вас", desc: "24/7 automated trading. 30% performance fee. No lock-up." },
             ].map((item) => (
               <AnimatedSection key={item.step} delay={parseInt(item.step) * 100}>
@@ -1540,10 +1540,10 @@ export default function Home() {
           </AnimatedSection>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {[
-              { icon: Shield, title: "Без передачи средств", desc: "Funds always stay in your exchange account." },
-              { icon: Wallet, title: "Вывод в любой момент", desc: "No lock-up." },
-              { icon: Eye, title: "Полная прозрачность", desc: "Every trade is visible in the exchange app." },
-              { icon: PercentCircle, title: "Fair Fee", desc: "30% only on profits." },
+              { icon: Shield, title: "Без передачи средств", desc: "Средства всегда остаются на вашем биржевом счёте." },
+              { icon: Wallet, title: "Вывод в любой момент", desc: "Без периода блокировки." },
+              { icon: Eye, title: "Полная прозрачность", desc: "Каждая сделка видна в приложении биржи." },
+              { icon: PercentCircle, title: "Честная комиссия", desc: "30% только с прибыли." },
             ].map((item, i) => (
               <AnimatedSection key={item.title} delay={i * 80}>
                 <div className="p-4 sm:p-6 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm h-full text-center">
@@ -1568,9 +1568,9 @@ export default function Home() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 mb-8 text-sm text-muted-foreground max-w-xs sm:max-w-md mx-auto">
             {[
-              "Years of experience",
-              "Thousands of accounts",
-              "Transparent Statistics",
+              "Лет опыта",
+              "Тысячи аккаунтов",
+              "Прозрачная статистика",
               "10-minute setup",
               "24/7 Support",
               "Без передачи средств",
