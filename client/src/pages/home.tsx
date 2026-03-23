@@ -497,8 +497,8 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
     <section className="relative min-h-[calc(100vh-4rem)] flex items-center overflow-hidden -mt-16 pt-16" data-testid="section-hero">
       <ParticleCanvas />
       <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-transparent" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px]" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-600/8 rounded-full blur-[100px]" />
+      <div className="absolute top-1/4 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-cyan-500/10 rounded-full blur-[120px]" />
+      <div className="absolute bottom-1/4 right-1/4 w-48 sm:w-80 h-48 sm:h-80 bg-blue-600/8 rounded-full blur-[100px]" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           <div className="text-left">
