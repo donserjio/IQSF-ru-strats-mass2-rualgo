@@ -623,9 +623,9 @@ function SocialProofBar() {
             "Работаем с 2018 года",
             "Прозрачная статистика",
             "Тысячи аккаунтов",
-            "Leading Crypto Exchanges",
+            "Крупнейшие криптобиржи",
             "Без перевода средств",
-            "Automated trading 24/7",
+            "Автоматическая торговля 24/7",
           ].map((text) => (
             <div key={text} className="flex items-center gap-3 text-sm sm:text-base text-white font-semibold pl-4 sm:pl-6">
               <CheckCircle className="w-5 h-5 text-cyan-400 shrink-0" />
@@ -682,7 +682,7 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
               Ключевые показатели
             </h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              {stats?.dateRange ? `Period: ${localizeDate(stats.dateRange)}` : "Loading data..."}
+              {stats?.dateRange ? `Период: ${localizeDate(stats.dateRange)}` : "Данные загружаются..."}
             </p>
             <LiveDataBadge text="Реальный торговый счёт" />
           </div>
@@ -820,7 +820,7 @@ function ChartPeriodFilter({
             data-testid="button-filter-calendar"
           >
             <CalendarRange className="w-3 h-3" />
-            {active === "custom" && range?.from ? rangeLabel : "Period"}
+            {active === "custom" && range?.from ? rangeLabel : "Период"}
           </button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0 bg-card border-border/50" align="start">
@@ -1112,10 +1112,10 @@ function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: bo
         <AnimatedSection>
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              Results
+              Результаты
             </h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Annual Годовая доходность и ключевые показатели
+              Годовая доходность и ключевые показатели
             </p>
             <LiveDataBadge text="На основе верифицированных реальных результатов" />
           </div>
@@ -1125,15 +1125,15 @@ function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: bo
           <AnimatedSection delay={100}>
             <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border-border/50">
               <div className="p-4 border-b border-border/30">
-                <h3 className="text-sm font-semibold text-foreground">Annual Returns</h3>
+                <h3 className="text-sm font-semibold text-foreground">Годовая доходность</h3>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-border/50">
-                      <th className="text-left px-4 py-3 text-xs font-semibold text-muted-foreground">Year</th>
-                      <th className="text-center px-4 py-3 text-xs font-semibold text-muted-foreground">Return</th>
-                      <th className="text-right px-4 py-3 text-xs font-semibold text-cyan-400">Cumulative</th>
+                      <th className="text-left px-4 py-3 text-xs font-semibold text-muted-foreground">Год</th>
+                      <th className="text-center px-4 py-3 text-xs font-semibold text-muted-foreground">Доходность</th>
+                      <th className="text-right px-4 py-3 text-xs font-semibold text-cyan-400">Накопленная</th>
                     </tr>
                   </thead>
                   <tbody>
