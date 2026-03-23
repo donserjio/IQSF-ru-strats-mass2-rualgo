@@ -581,11 +581,11 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
 
 function ExchangesBar() {
   const exchanges = [
-    { name: "Bybit", logo: "/exchanges/bybit.png", scale: "scale-[1.6]", filter: "brightness-0 invert" },
+    { name: "Bybit", logo: "/exchanges/bybit.png", scale: "scale-[1.4]", filter: "" },
     { name: "Binance", logo: "/exchanges/binance.svg", scale: "scale-[1.9]", filter: "" },
     { name: "Bitget", logo: "/exchanges/bitget.png", scale: "scale-100", filter: "" },
     { name: "OKX", logo: "/exchanges/okx.png", scale: "scale-[1.4]", filter: "brightness-0 invert" },
-    { name: "BingX", logo: "/exchanges/bingx.png", scale: "scale-100", filter: "" },
+    { name: "BingX", logo: "/exchanges/bingx.svg", scale: "scale-[1.2]", filter: "" },
   ];
   return (
     <section className="py-12 px-4 sm:px-6 bg-card/40 border-y border-cyan-500/10">
