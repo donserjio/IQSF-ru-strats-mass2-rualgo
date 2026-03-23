@@ -300,7 +300,7 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="flex items-center gap-4 h-16">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -329,7 +329,7 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
             <div className="w-px h-4 bg-border/50 mx-2" />
           </div>
 
-          <div className="hidden md:flex items-center gap-1 ml-auto">
+          <div className="hidden md:flex items-center gap-1 ml-auto min-w-0 overflow-hidden">
             {NAV_ITEMS.map((item) => (
               <button
                 key={item.href}
