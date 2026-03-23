@@ -418,10 +418,15 @@ html, body {
 }
 
 
-/* Fix tooltip overflow on mobile */
-.recharts-tooltip-wrapper {
-  pointer-events: none !important;
-}
-.recharts-wrapper {
-  overflow: hidden !important;
+/* Smart tooltip positioning on mobile */
+@media (max-width: 640px) {
+  .recharts-tooltip-wrapper {
+    pointer-events: none !important;
+    max-width: calc(100vw - 32px) !important;
+  }
+  .recharts-tooltip-wrapper[style*="left"] {
+    left: auto !important;
+    right: 8px !important;
+    transform: none !important;
+  }
 }
