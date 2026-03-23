@@ -526,10 +526,10 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
             </AnimatedSection>
 
             <AnimatedSection delay={300}>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-nowrap gap-3 w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold px-12 py-7 text-lg rounded-xl cta-pulse transition-all"
+                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold flex-1 sm:flex-none px-8 py-6 text-base rounded-xl cta-pulse transition-all"
                   onClick={() => window.open("https://t.me/etheremax", "_blank")}
                 >
                   Подключиться
@@ -537,7 +537,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-border/50 text-foreground bg-transparent px-8 py-6 text-base"
+                  className="border-border/50 text-foreground bg-transparent flex-1 sm:flex-none px-8 py-6 text-base"
                   onClick={() => document.querySelector("#equity")?.scrollIntoView({ behavior: "smooth" })}
                 >
                   Результаты <ArrowRight className="w-4 h-4 ml-2" />
