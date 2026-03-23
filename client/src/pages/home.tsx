@@ -63,7 +63,7 @@ interface StrategyConfig {
   riskDesc: string;
   execDesc: string;
   strategyType: string;
-  holdingPeriod: string;
+  holdingПериод: string;
   capacity: string;
 }
 
@@ -73,14 +73,14 @@ const STRATEGIES: Record<string, StrategyConfig> = {
     apiKey: "basket50",
     label: "Algo Momentum",
     pairs: ["BTC/USDT", "ETH/USDT"],
-    approachShort: "Мультисистемный количественный подход",
-    approachFull: "комбинации нескольких количественных моделей",
-    desc: "Портфель из 15 независимых алгоритмических стратегий, работающих на 2 наиболее ликвидных криптовалютных парах — BTC и ETH. Каждая модель использует собственную логику входа и выхода — от краткосрочного моментума до возврата к среднему. Комбинация разных подходов сглаживает кривую доходности и снижает зависимость от одного рыночного режима.",
-    archDesc: "Система объединяет 15 независимых алгоритмов на BTC и ETH. Торговля ведётся как в лонг, так и в шорт. Диверсификация по стратегиям обеспечивает стабильность в любых рыночных условиях — от трендов до боковиков.",
-    riskDesc: "Каждая позиция открывается с фиксированным риском. Стоп-лоссы и тейк-профиты рассчитываются алгоритмом на основе текущей волатильности. В периоды аномальных движений система автоматически снижает экспозицию.",
+    approachShort: "Multi-system quantitative approach",
+    approachFull: "a combination of multiple quantitative models",
+    desc: "A portfolio of 15 independent algorithmic strategies on the 2 most liquid crypto pairs — BTC and ETH. Each model uses its own entry/exit logic — from short-term momentum to mean-reversion. The combination smooths the equity curve and reduces dependence on a single market regime.",
+    archDesc: "The system combines 15 independent algorithms on BTC and ETH. Trading is conducted both long and short. Диверсификация по стратегиям обеспечивает стабильность в любых рыночных условиях — от трендов до боковиков.",
+    riskDesc: "Each position opens with fixed risk. Stop-losses and take-profits are calculated by the algorithm based on current volatility. During abnormal moves, the system automatically reduces exposure.",
     execDesc: "Полностью автоматизированное исполнение 24/7. Алгоритм выбирает тип ордера в зависимости от ликвидности и спреда. Работа без участия человека исключает эмоциональный фактор.",
-    strategyType: "Количественная, систематическая",
-    holdingPeriod: "< 3 дней",
+    strategyType: "Quantitative, systematic",
+    holdingПериод: "< 3 days",
     capacity: "$200M",
   },
   basket70tf: {
@@ -88,14 +88,14 @@ const STRATEGIES: Record<string, StrategyConfig> = {
     apiKey: "basket70tf",
     label: "Algo Trend",
     pairs: ["BTC/USDT", "ETH/USDT"],
-    approachShort: "Следование за трендом с моментум-фильтрами",
-    approachFull: "следования за трендом с использованием моментум-эффекта",
-    desc: "Портфель из 15 трендовых алгоритмов на BTC и ETH, ориентированных на извлечение прибыли из направленных движений рынка. Стратегии удерживают позиции дольше, позволяя захватывать крупные ценовые импульсы. Встроенные фильтры волатильности отсекают ложные сигналы.",
-    archDesc: "15 преимущественно трендовых моделей на BTC и ETH с увеличенным периодом удержания позиций. Комбинация моментума и кластеризации волатильности позволяет ловить сильные направленные движения и оставаться в стороне во время боковика.",
-    riskDesc: "Фиксированный риск на каждую сделку без усреднения убытков. Позиции закрываются по стоп-лоссу или трейлинг-стопу, адаптированному к текущей волатильности.",
-    execDesc: "Вход и выход осуществляется рыночными или лимитными ордерами в зависимости от глубины стакана и текущего спреда.",
-    strategyType: "Трендовая, моментум, систематическая",
-    holdingPeriod: "< 14 дней",
+    approachShort: "Trend-following with momentum filters",
+    approachFull: "trend-following using the momentum effect",
+    desc: "A portfolio of 15 trend-following algorithms on BTC and ETH focused on directional market moves. Strategies hold positions longer to capture large price impulses. Built-in volatility filters eliminate false signals.",
+    archDesc: "15 predominantly trend-following models on BTC and ETH with extended holding periods. Momentum and volatility clustering allow capturing strong directional moves while staying out during sideways markets.",
+    riskDesc: "Fixed risk per trade with no loss averaging. Positions are closed at stop-loss or a trailing stop adapted to current volatility.",
+    execDesc: "Entries and exits are executed via market or limit orders depending on order book depth and current spread.",
+    strategyType: "Trend-following, momentum, systematic",
+    holdingПериод: "< 14 days",
     capacity: "$350M",
   },
 };
@@ -265,8 +265,8 @@ function ParticleCanvas() {
 
 const NAV_ITEMS = [
   { label: "Результаты", href: "#results" },
-  { label: "Показатели", href: "#metrics" },
-  { label: "Как работает", href: "#how-it-works" },
+  { label: "Metrics", href: "#metrics" },
+  { label: "How It Works", href: "#how-it-works" },
   { label: "FAQ", href: "#faq" },
 ];
 
@@ -347,7 +347,7 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
               data-testid="button-nav-contact"
             >
               <Send className="w-3 h-3 mr-1.5" />
-              Написать нам
+              Свяжитесь с нами
             </Button>
             <Button
               size="sm"
@@ -529,7 +529,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
               <div className="flex flex-nowrap gap-3 w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold flex-1 sm:flex-none px-8 py-6 text-base rounded-xl cta-pulse transition-all"
+                  className="flex-1 sm:flex-none bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold px-8 py-6 text-base rounded-xl cta-pulse transition-all"
                   onClick={() => window.open("https://t.me/etheremax", "_blank")}
                 >
                   Подключиться
@@ -537,7 +537,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-border/50 text-foreground bg-transparent flex-1 sm:flex-none px-8 py-6 text-base"
+                  className="flex-1 sm:flex-none border-border/50 text-foreground bg-transparent px-8 py-6 text-base"
                   onClick={() => document.querySelector("#equity")?.scrollIntoView({ behavior: "smooth" })}
                 >
                   Результаты <ArrowRight className="w-4 h-4 ml-2" />
@@ -550,7 +550,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
             <AnimatedSection delay={400}>
               <div className="rounded-2xl border border-border/30 bg-card/30 backdrop-blur-sm p-5 sm:p-6">
                 <div className="flex items-center justify-between mb-4 gap-2">
-                  <span className="text-sm text-muted-foreground font-medium shrink-0">{sc.label}</span>
+                  <span className="text-sm text-muted-foreground font-medium">{sc.label}</span>
                   <span className="text-sm sm:text-base font-bold text-cyan-400 font-mono text-right">
                     Кривая доходности
                   </span>
@@ -579,7 +579,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
   );
 }
 
-function ExchangesBar() {
+function БиржиBar() {
   const exchanges = [
     { name: "Bybit", logo: "/exchanges/bybit.svg", scale: "scale-[1.8]", filter: "" },
     { name: "Binance", logo: "/exchanges/binance.svg", scale: "scale-[1.9]", filter: "" },
@@ -640,9 +640,9 @@ function SocialProofBar() {
 
 function localizeDate(s: string): string {
   const months: Record<string, string> = {
-    January: "января", February: "февраля", March: "марта", April: "апреля",
-    May: "мая", June: "июня", July: "июля", August: "августа",
-    September: "сентября", October: "октября", November: "ноября", December: "декабря",
+    January: "January", February: "February", March: "March", April: "April",
+    May: "May", June: "June", July: "July", August: "August",
+    September: "September", October: "October", November: "November", December: "December",
   };
   return s.replace(/(\w+)\s+(\d+),\s+(\d+)/g, (_m, mon, day, year) => `${day} ${months[mon] ?? mon} ${year}`);
 }
@@ -656,7 +656,7 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
   const m = stats?.metrics;
   const metricsCards = [
     {
-      label: "Общий доход",
+      label: "Total Return",
       value: getMetricValue(m, "Cumulative Return", getMetricValue(m, "Total Return", "---")),
     },
     {
@@ -664,11 +664,11 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
       value: calcAvgYearly(m, stats?.dateRange),
     },
     {
-      label: "Коэффициент Шарпа",
+      label: "Коэфф. Шарпа",
       value: getMetricValue(m, "Sharpe", "---"),
     },
     {
-      label: "Макс. просадка",
+      label: "Max Drawdown",
       value: getMetricValue(m, "Max Drawdown", "---"),
     },
   ];
@@ -679,12 +679,12 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
         <AnimatedSection>
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              Ключевые показатели
+              Key Metrics
             </h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              {stats?.dateRange ? `Период: ${localizeDate(stats.dateRange)}` : "Загрузка данных..."}
+              {stats?.dateRange ? `Период: ${localizeDate(stats.dateRange)}` : "Loading data..."}
             </p>
-            <LiveDataBadge text="Реальный торговый счёт" />
+            <LiveDataBadge text="Live Trading Account" />
           </div>
         </AnimatedSection>
 
@@ -709,7 +709,7 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
   );
 }
 
-function ChartPeriodFilter({
+function ChartПериодFilter({
   allData,
   onFilter,
   rebaseOnFilter = false,
@@ -727,7 +727,7 @@ function ChartPeriodFilter({
 
   const rangeLabel = useMemo(() => {
     if (!range?.from) return "";
-    const fmt = (d: Date) => d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    const fmt = (d: Date) => d.toLocaleDateString("ru-RU", { month: "short", day: "numeric", year: "numeric" });
     if (range.to) return fmt(range.from) + " — " + fmt(range.to);
     return "From " + fmt(range.from);
   }, [range]);
@@ -880,7 +880,7 @@ function ZoomableChart({
   rebaseOnZoom = false,
   yearlyTicks = false,
   yMin,
-  locale = "en-US",
+  locale = "ru-RU",
   liveBadgeText,
 }: {
   data: { date: string; value: number }[];
@@ -940,7 +940,7 @@ function ZoomableChart({
       {isZoomed && (
         <div className="flex justify-end mb-2">
           <Button variant="outline" size="sm" className="text-xs border-border/50" onClick={handleReset}>
-            Reset Zoom
+            Сбросить
           </Button>
         </div>
       )}
@@ -986,12 +986,8 @@ function ZoomableChart({
               tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(v: number) => {
-                const abs = Math.abs(v);
-                if (abs >= 1000) return (v / 1000).toFixed(0) + "K" + valueSuffix;
-                return v.toFixed(0) + valueSuffix;
-              }}
-              width={50}
+              tickFormatter={(v: number) => v.toFixed(0) + valueSuffix}
+              width={55}
               domain={yMin !== undefined ? [yMin, "auto"] : ["auto", "auto"]}
               allowDataOverflow={yMin !== undefined}
             />
@@ -1030,7 +1026,7 @@ function ZoomableChart({
         </ResponsiveContainer>
       </div>
       {!isZoomed && (
-        <p className="text-[10px] text-muted-foreground/40 text-center mt-2">Click and drag on chart to zoom in</p>
+        <p className="text-[10px] text-muted-foreground/40 text-center mt-2">Выделите область на графике для увеличения</p>
       )}
     </div>
   );
@@ -1045,12 +1041,12 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
   }, [equityRaw]);
 
   return (
-    <section id="equity" className="py-12 px-4 sm:px-6 relative overflow-hidden" data-testid="section-equity">
-      <div className="max-w-7xl mx-auto overflow-hidden">
+    <section id="equity" className="py-12 px-4 sm:px-6 relative" data-testid="section-equity">
+      <div className="max-w-7xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              Результаты стратегии
+              Strategy Результаты
             </h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
               Рост капитала и эквити стратегии
@@ -1064,7 +1060,7 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
             <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
               <h3 className="text-sm font-semibold text-foreground">Кривая доходности</h3>
               {equityRaw.length > 0 && (
-                <ChartPeriodFilter allData={equityRaw} onFilter={setFilteredData} rebaseOnFilter />
+                <ChartПериодFilter allData={equityRaw} onFilter={setFilteredData} rebaseOnFilter />
               )}
             </div>
             {isLoading ? (
@@ -1093,19 +1089,19 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
   );
 }
 
-function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
+function РезультатыSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
   const m = stats?.metrics;
   const eoyReturns = stats?.eoyReturns ?? [];
 
   const resultStats = [
-    { label: "Прибыльных месяцев", value: getMetricValue(m, "Win Month", "—") },
-    { label: "Лучший месяц", value: getMetricValue(m, "Best Month", "—") },
-    { label: "Худший месяц", value: getMetricValue(m, "Worst Month", "—") },
-    { label: "Ср. прибыльный месяц", value: getMetricValue(m, "Avg. Up Month", "—") },
-    { label: "Ср. убыточный месяц", value: getMetricValue(m, "Avg. Down Month", "—") },
-    { label: "Лучший год", value: getMetricValue(m, "Best Year", "—") },
-    { label: "Худший год", value: getMetricValue(m, "Worst Year", "—") },
-    { label: "Прибыльных лет", value: getMetricValue(m, "Win Year", "—") },
+    { label: "Profitable Months", value: getMetricValue(m, "Win Month", "—") },
+    { label: "Best Month", value: getMetricValue(m, "Best Month", "—") },
+    { label: "Worst Month", value: getMetricValue(m, "Worst Month", "—") },
+    { label: "Avg. Winning Month", value: getMetricValue(m, "Avg. Up Month", "—") },
+    { label: "Avg. Losing Month", value: getMetricValue(m, "Avg. Down Month", "—") },
+    { label: "Best Year", value: getMetricValue(m, "Best Year", "—") },
+    { label: "Worst Year", value: getMetricValue(m, "Worst Year", "—") },
+    { label: "Profitable Years", value: getMetricValue(m, "Win Year", "—") },
   ];
 
   return (
@@ -1117,7 +1113,7 @@ function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: bo
               Результаты
             </h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Годовые доходности и ключевая статистика
+              Годовой доходs & Key Statistics
             </p>
             <LiveDataBadge text="На основе верифицированных реальных результатов по API" />
           </div>
@@ -1127,15 +1123,15 @@ function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: bo
           <AnimatedSection delay={100}>
             <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border-border/50">
               <div className="p-4 border-b border-border/30">
-                <h3 className="text-sm font-semibold text-foreground">Годовые доходности</h3>
+                <h3 className="text-sm font-semibold text-foreground">Годовой доходs</h3>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-border/50">
-                      <th className="text-left px-4 py-3 text-xs font-semibold text-muted-foreground">Год</th>
-                      <th className="text-center px-4 py-3 text-xs font-semibold text-muted-foreground">Доходность</th>
-                      <th className="text-right px-4 py-3 text-xs font-semibold text-cyan-400">Накопленная</th>
+                      <th className="text-left px-4 py-3 text-xs font-semibold text-muted-foreground">Year</th>
+                      <th className="text-center px-4 py-3 text-xs font-semibold text-muted-foreground">Return</th>
+                      <th className="text-right px-4 py-3 text-xs font-semibold text-cyan-400">Cumulative</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1157,7 +1153,7 @@ function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: bo
           <AnimatedSection delay={200}>
             <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border-border/50">
               <div className="p-4 border-b border-border/30">
-                <h3 className="text-sm font-semibold text-foreground">Статистика результатов</h3>
+                <h3 className="text-sm font-semibold text-foreground">Performance Statistics</h3>
               </div>
               <div className="p-4 space-y-0">
                 {resultStats.map((item) => (
@@ -1180,10 +1176,10 @@ const ACCESS_TERMS_BASE = [
   { label: "Комиссия за управление", value: "0%" },
   { label: "Комиссия за результат", value: "30%" },
   { label: "Принцип «высшей отметки»", value: "Применяется" },
-  { label: "Срок блокировки", value: "Отсутствует" },
+  { label: "Lock-up Период", value: "Отсутствует" },
   { label: "Распределение комиссий", value: "Раз в квартал" },
   { label: "Формат подключения", value: "API-ключ через биржу" },
-  { label: "Торговые активы", value: "10 торговых пар, 5 подходов" },
+  { label: "Торговые активы", value: "10 trading pairs, 5 approaches" },
   { label: "Обеспечение", value: "USDT" },
   { label: "Биржи", value: "Binance, OKX, Bybit, Bitget, BingX" },
 ];
@@ -1226,40 +1222,40 @@ function ExchangeLogos({ strategyKey }: { strategyKey: string }) {
 function buildFaqItems(sc: StrategyConfig) {
   return [
     {
-      q: "Как работает сервис?",
-      a: `Управляющая компания подключается к субаккаунту клиента на бирже через API и управляет торговлей по стратегии ${sc.label}. Систематический портфель на основе ${sc.approachFull} работает непрерывно и полностью автоматически — без дискреционного вмешательства. Ваш капитал всегда остаётся на вашем счёте на бирже.`,
+      q: "How does the service work?",
+      a: `The management company connects to the client's exchange sub-account via API and manages trading under the ${sc.label} strategy. The systematic portfolio based on ${sc.approachFull} operates continuously and fully automatically — without discretionary intervention. Your capital always remains in your exchange account.`,
     },
     {
-      q: "Где хранятся мои средства?",
-      a: "Ваш капитал остаётся на вашем субаккаунте на бирже (OKX, Binance или любой другой). Управляющая компания получает только торговый API-доступ — без разрешения на вывод или перевод средств. Вы сохраняете полный контроль над своими средствами.",
+      q: "Where are my funds held?",
+      a: "Your capital remains in your exchange sub-account (OKX, Binance, or any other). The management company receives trading API access only — no withdrawal or transfer permissions. You retain full control over your funds.",
     },
     {
-      q: "Как начать работу?",
-      a: "Свяжитесь с нами через Telegram для начала онбординга. Мы поможем вам создать API-ключ на бирже (без возможности вывода средств, разрешения только на торговлю) и подключим вашу учётную запись к алгоритму. Процесс занимает менее 10 минут.",
+      q: "How do I get started?",
+      a: "Contact us via Telegram to start onboarding. We'll help you create an API key (no withdrawal permissions, trading only) and connect your account. The process takes less than 10 minutes.",
     },
     {
-      q: "Каков минимальный размер аллокации?",
-      a: "Минимальная аллокация — $500. Мы поддерживаем все основные криптовалютные биржи.",
+      q: "What is the minimum allocation?",
+      a: "Minimum allocation — $500. We support all major cryptocurrency exchanges.",
     },
     {
-      q: "Какие комиссии применяются?",
-      a: "Комиссия за управление составляет 0%, плюс комиссия за результат 30% с принципом «высшей отметки». Комиссии рассчитываются и распределяются ежеквартально. Срок блокировки средств отсутствует.",
+      q: "What fees apply?",
+      a: "Management fee is 0%, plus a 30% performance fee with high-water mark. Fees are calculated and distributed quarterly. No lock-up period.",
     },
     {
-      q: "Какие биржи поддерживаются?",
-      a: "Binance, OKX, Bybit, Bitget, BingX. Подключение через API-ключ биржи.",
+      q: "Which exchanges are supported?",
+      a: "Binance, OKX, Bybit, Bitget, BingX. Connection via exchange API key.",
     },
     {
-      q: "Какие активы торгуются?",
-      a: "Стратегии торгуют бессрочными фьючерсами на BTC и ETH.",
+      q: "What assets are traded?",
+      a: "Strategies trade perpetual futures on BTC and ETH.",
     },
     {
-      q: "Какие меры управления рисками применяются?",
-      a: `Каждая сделка открывается с фиксированным риском. Стоп-лоссы и тейк-профиты калибруются автоматически с учётом текущей волатильности. В периоды аномальной волатильности система снижает активность. Круглосуточный автоматический мониторинг.`,
+      q: "What risk management measures are used?",
+      a: `Each trade opens with fixed risk. Stop-losses and take-profits are calibrated automatically based on current volatility. During abnormal volatility, the system reduces activity. 24/7 automatic monitoring.`,
     },
     {
-      q: "Данные о результатах — бэктест или реальная торговля?",
-      a: "Представленные на сайте данные основаны на результатах реальной алгоритмической торговли. Прошлые результаты не являются показателем будущих результатов.",
+      q: "Is the performance data from backtesting or live trading?",
+      a: "The data presented on the website is based on live algorithmic trading results. Прошлые результаты is not indicative of future results.",
     },
   ];
 }
@@ -1309,10 +1305,10 @@ function Footer() {
       <div className="px-4 sm:px-6 pb-10">
         <div className="max-w-7xl mx-auto pt-8">
           <p className="text-xs text-muted-foreground/60 leading-relaxed max-w-5xl mx-auto text-center">
-            <strong>Отказ от ответственности:</strong> Алгоритмическая торговля цифровыми активами сопряжена со значительными рисками и подходит только для квалифицированных клиентов. Цифровые активы высоко волатильны и носят спекулятивный характер. Стратегии могут испытывать существенные просадки в неблагоприятных рыночных условиях. Рынки криптовалют подвержены развивающейся и неопределённой нормативной среде. Существует биржевой риск контрагента, включая возможность отказа биржи или нарушений безопасности. Прошлые результаты не являются показателем будущих результатов. Клиенты должны иметь достаточный баланс, чтобы переносить потерю значительной части или всего вложенного капитала. Данный сервис не подходит для клиентов, которые не могут перенести существенные потери капитала или которым требуется ликвидность в короткие сроки.
+            <strong>Disclaimer:</strong> Algorithmic trading of digital assets involves significant risks and is suitable only for qualified clients. Digital assets are highly volatile and speculative in nature. Strategies may experience substantial drawdowns under adverse market conditions. Cryptocurrency markets are subject to an evolving and uncertain regulatory environment. Exchange counterparty risk exists, including the possibility of exchange failure or security breaches. Прошлые результаты is not indicative of future results. Clients must have sufficient capital to sustain the loss of a significant portion or all of their invested capital. This service is not suitable for clients who cannot sustain substantial capital losses or who require liquidity in the short term.
           </p>
           <div className="mt-4 text-xs text-muted-foreground/40 text-center">
-            &copy; {new Date().getFullYear()} Управляющая компания. Все права защищены.
+            &copy; {new Date().getFullYear()} Management Company. All rights reserved.
           </div>
         </div>
       </div>
@@ -1334,39 +1330,39 @@ function LegalDisclaimerModal() {
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4 text-sm text-muted-foreground leading-relaxed custom-scrollbar">
           <div>
             <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Только информационные цели</h3>
-            <p>Настоящий сайт предоставлен исключительно в информационных целях и не является предложением о продаже, запросом на предложение или какой-либо формой инвестиционного совета. Доступ к данному сервису предоставляется только квалифицированным клиентам, соответствующим применимым критериям приемлемости, и заключившим соглашение об оказании услуг с Управляющая компания.</p>
+            <p>This website is provided for informational purposes only and does not constitute an offer to sell, a solicitation of an offer, or any form of investment advice. Access to this service is provided only to qualified clients who meet applicable eligibility criteria and have entered into a service agreement with the management company.</p>
           </div>
           <div>
             <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Не является инвестиционным советом</h3>
-            <p>Ничто на этом сайте не является инвестиционным, юридическим, налоговым или иным советом. Потенциальным клиентам следует проконсультироваться с собственными профессиональными советниками относительно пригодности данного сервиса для их обстоятельств.</p>
+            <p>Nothing on this website constitutes investment, legal, tax, or other advice. Prospective clients should consult their own professional advisors regarding the suitability of this service for their circumstances.</p>
           </div>
           <div>
             <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Риск потерь</h3>
-            <p>Алгоритмическая торговля цифровыми активами сопряжена со значительными рисками, включая возможную потерю всей или значительной части вложенного капитала. Цифровые активы высоко волатильны и носят спекулятивный характер. Данный сервис подходит только для клиентов, которые могут позволить себе потерять всю аллокацию.</p>
+            <p>Algorithmic trading of digital assets involves significant risks, including the possible loss of all or a substantial portion of invested capital. Digital assets are highly volatile and speculative in nature. This service is only suitable for clients who can afford to lose their entire allocation.</p>
           </div>
           <div>
             <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Прошлые результаты</h3>
-            <p>Прошлые результаты не являются показателем будущих результатов. Представленные на сайте данные отражают результаты реальной алгоритмической торговли. Исторические результаты не являются гарантией будущей доходности и не отражают влияние всех возможных рыночных сценариев на результаты стратегии.</p>
+            <p>Прошлые результаты is not indicative of future results. The data presented on this website reflects the results of live algorithmic trading. Historical results are not a guarantee of future returns and do not reflect the impact of all possible market scenarios on strategy performance.</p>
           </div>
           <div>
             <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Отсутствие гарантий</h3>
-            <p>Нет гарантии, что стратегии достигнут своих целей. Целевая доходность и метрики риска являются целями, а не гарантиями. Существенные просадки могут возникать в неблагоприятных рыночных условиях.</p>
+            <p>There is no guarantee that the strategies will achieve their objectives. Target returns and risk metrics are goals, not guarantees. Substantial drawdowns may occur under adverse market conditions.</p>
           </div>
           <div>
             <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Биржевые и контрагентские риски</h3>
-            <p>Средства клиентов остаются на собственном субаккаунте клиента на бирже. Управляющая компания имеет только API-доступ для торговли без разрешения на вывод средств. Существует биржевой риск контрагента, включая возможность отказа биржи или нарушений безопасности, оценка которых лежит на клиенте.</p>
+            <p>Client funds remain in the client's own sub-account on the exchange. The management company has only API access for trading without permission to withdraw funds. Exchange counterparty risk exists, including the possibility of exchange failure or security breaches, the assessment of which lies with the client.</p>
           </div>
           <div>
             <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Прогнозные заявления</h3>
-            <p>Этот сайт может содержать прогнозные заявления. Такие заявления подвержены рискам и неопределённостям, которые могут привести к существенным отличиям фактических результатов. Управляющая компания не берёт на себя обязательства по обновлению прогнозных заявлений.</p>
+            <p>This website may contain forward-looking statements. Such statements are subject to risks and uncertainties that may cause actual results to differ materially. The management company undertakes no obligation to update forward-looking statements.</p>
           </div>
           <div>
             <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Доступ по инициативе клиента</h3>
-            <p>Содержание этого сайта доступно только лицам, получившим к нему доступ по собственной инициативе, без какого-либо прямого или косвенного привлечения со стороны Управляющая компания. Если вы не заходили на этот сайт по собственной инициативе, вам следует немедленно покинуть его.</p>
+            <p>The content of this website is only available to persons who have accessed it on their own initiative, without any direct or indirect solicitation by the management company. If you have not accessed this website on your own initiative, you should leave immediately.</p>
           </div>
           <div>
             <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider mb-2">Ограниченные юрисдикции</h3>
-            <p>Информация на этом сайте не предназначена для распространения среди лиц или организаций в какой-либо юрисдикции или стране, где такое распространение или использование противоречило бы местному законодательству или нормативным требованиям.</p>
+            <p>The information on this website is not intended for distribution to persons or entities in any jurisdiction or country where such distribution or use would be contrary to local law or regulatory requirements.</p>
           </div>
         </div>
         <div className="px-6 py-4 border-t border-border/30 flex flex-col sm:flex-row gap-3 sm:justify-end">
@@ -1401,7 +1397,8 @@ const STRATEGY_URL_MAP: Record<StrategyKey, string> = {
 
 function getStrategyFromPath(): StrategyKey {
   const path = window.location.pathname.replace(/^\//, "").toLowerCase();
-    if (path && !STRATEGY_SLUG_MAP[path]) {
+  if (path && !STRATEGY_SLUG_MAP[path]) {
+    // Redirect unknown slugs to default
     window.history.replaceState(null, "", "/");
   }
   return STRATEGY_SLUG_MAP[path] || "basket50";
@@ -1442,20 +1439,20 @@ export default function Home() {
       <Navbar strategy={strategy} onStrategyChange={setStrategy} />
       <HeroSection stats={stats ?? undefined} sc={sc} />
 
-      <ExchangesBar />
+      <БиржиBar />
       <SocialProofBar />
 
       <EquityChartSection stats={stats ?? undefined} isLoading={isLoading} strategyKey={strategy} />
       <MetricsSection stats={stats ?? undefined} isLoading={isLoading} strategyKey={strategy} />
-      <ResultsSection stats={stats ?? undefined} isLoading={isLoading} />
+      <РезультатыSection stats={stats ?? undefined} isLoading={isLoading} />
 
       <section className="py-12 px-4 sm:px-6 relative" data-testid="section-strategy">
         <div className="max-w-5xl mx-auto">
           <AnimatedSection>
             <div className="text-center mb-10">
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Как устроена стратегия</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Strategy Architecture</h2>
               <p className="text-muted-foreground text-sm max-w-2xl mx-auto">
-                15 торговых систем на 2 наиболее ликвидных парах — BTC и ETH. Полностью автоматизированное исполнение с встроенным контролем рисков.
+                15 trading systems on the 2 most liquid pairs — BTC and ETH. Fully automated execution with built-in risk management.
               </p>
             </div>
           </AnimatedSection>
@@ -1464,25 +1461,25 @@ export default function Home() {
               {
                 num: "01",
                 title: "Диверсификация",
-                desc: "15 независимых торговых систем снижают зависимость от одного рыночного режима. Торговля ведётся на BTC и ETH — как в лонг, так и в шорт.",
+                desc: "15 independent trading systems reduce dependence on a single market regime. Trading on BTC and ETH — both long and short.",
                 accent: "from-cyan-500/30 to-cyan-600/10",
               },
               {
                 num: "02",
                 title: "Контроль рисков",
-                desc: "Каждая позиция ограничена по размеру и имеет стоп-лосс. Общий риск портфеля контролируется на уровне корреляций между стратегиями.",
+                desc: "Each position is size-limited with a stop-loss. Overall portfolio risk is controlled at the correlation level between strategies.",
                 accent: "from-blue-500/30 to-blue-600/10",
               },
               {
                 num: "03",
                 title: "Автоматизация",
-                desc: "Алгоритм исполняет сделки 24/7 без участия человека. Решения основаны на математических моделях.",
+                desc: "The algorithm executes trades 24/7 without human involvement. Decisions are based on mathematical models.",
                 accent: "from-violet-500/30 to-violet-600/10",
               },
               {
                 num: "04",
                 title: "Адаптивность",
-                desc: "15 стратегий используют моментум, возврат к среднему и кластеризацию волатильности — подходы для разных рыночных фаз.",
+                desc: "15 strategies use momentum, mean-reversion, and volatility clustering — approaches that work across different market phases.",
                 accent: "from-emerald-500/30 to-emerald-600/10",
               },
             ].map((item, i) => (
@@ -1507,15 +1504,15 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <AnimatedSection>
             <div className="text-center mb-10">
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Как это работает</h2>
-              <p className="text-muted-foreground text-sm max-w-lg mx-auto">Алготрейдинг через API биржи — просто и быстро</p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">How It Works</h2>
+              <p className="text-muted-foreground text-sm max-w-lg mx-auto">Algo trading via exchange API — simple and fast</p>
             </div>
           </AnimatedSection>
           <div className="flex flex-col sm:grid sm:grid-cols-3 gap-3 sm:gap-6">
             {[
-              { step: "01", title: "Откройте счёт на бирже", desc: "Binance, OKX, Bybit, Bitget, BingX. Минимум — $500." },
-              { step: "02", title: "Свяжитесь с нами", desc: "Telegram / WhatsApp. Подключение через API-ключ за 10 минут." },
-              { step: "03", title: "Алгоритм работает за вас", desc: "Торговля 24/7. Комиссия 30% с прибыли. Без блокировки средств." },
+              { step: "01", title: "Откройте счёт на бирже", desc: "Binance, OKX, Bybit, Bitget, BingX. Minimum — $500." },
+              { step: "02", title: "Свяжитесь с нами", desc: "Telegram / WhatsApp. Connection via API key in 10 minutes." },
+              { step: "03", title: "Алгоритм работает за вас", desc: "24/7 automated trading. 30% performance fee. No lock-up." },
             ].map((item) => (
               <AnimatedSection key={item.step} delay={parseInt(item.step) * 100}>
                 <div className="flex sm:flex-col items-center sm:text-center gap-4 sm:gap-0 p-4 sm:p-6 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm h-full">
@@ -1537,16 +1534,16 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <AnimatedSection>
             <div className="text-center mb-10">
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Почему алготрейдинг по API</h2>
-              <p className="text-muted-foreground text-sm max-w-lg mx-auto">Преимущества алгоритмической торговли</p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Why Algorithmic Trading via API</h2>
+              <p className="text-muted-foreground text-sm max-w-lg mx-auto">Advantages of algorithmic trading</p>
             </div>
           </AnimatedSection>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {[
-              { icon: Shield, title: "Без передачи средств", desc: "Деньги всегда на вашем биржевом счёте." },
-              { icon: Wallet, title: "Вывод в любой момент", desc: "Нет блокировки средств." },
-              { icon: Eye, title: "Полная прозрачность", desc: "Каждая сделка видна в приложении биржи." },
-              { icon: PercentCircle, title: "Честная комиссия", desc: "30% только с прибыли." },
+              { icon: Shield, title: "Без передачи средств", desc: "Funds always stay in your exchange account." },
+              { icon: Wallet, title: "Вывод в любой момент", desc: "No lock-up." },
+              { icon: Eye, title: "Полная прозрачность", desc: "Every trade is visible in the exchange app." },
+              { icon: PercentCircle, title: "Fair Fee", desc: "30% only on profits." },
             ].map((item, i) => (
               <AnimatedSection key={item.title} delay={i * 80}>
                 <div className="p-4 sm:p-6 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm h-full text-center">
@@ -1571,11 +1568,11 @@ export default function Home() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 mb-8 text-sm text-muted-foreground max-w-xs sm:max-w-md mx-auto">
             {[
-              "Многолетний опыт",
-              "Тысячи аккаунтов",
-              "Прозрачная статистика",
-              "10 минут на подключение",
-              "Поддержка 24/7",
+              "Years of experience",
+              "Thousands of accounts",
+              "Transparent Statistics",
+              "10-minute setup",
+              "24/7 Support",
               "Без передачи средств",
             ].map((text) => (
               <div key={text} className="flex items-center gap-2 pl-2">
@@ -1587,7 +1584,7 @@ export default function Home() {
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20 w-full sm:w-auto cta-pulse transition-all"
+              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20 min-w-[200px] cta-pulse transition-all"
               onClick={() => window.open("https://t.me/etheremax", "_blank")}
             >
               <Send className="w-4 h-4 mr-2" />
@@ -1595,7 +1592,7 @@ export default function Home() {
             </Button>
             <Button
               size="lg"
-              className="bg-[#25D366] hover:bg-[#1fb855] text-white shadow-lg shadow-green-500/20 w-full sm:w-auto"
+              className="bg-[#25D366] hover:bg-[#1fb855] text-white shadow-lg shadow-green-500/20 min-w-[200px]"
               onClick={() => window.open("https://wa.me/48883750965", "_blank")}
             >
               <SiWhatsapp className="w-4 h-4 mr-2" />
