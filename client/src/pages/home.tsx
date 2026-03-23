@@ -1052,7 +1052,7 @@ function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsDa
               Результаты стратегии
             </h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Equity curve — compounded capital growth
+              Кривая эквити — совокупный рост капитала
             </p>
             <LiveDataBadge text="Обновляется ежедневно · Binance API" />
           </div>
@@ -1156,7 +1156,7 @@ function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: bo
           <AnimatedSection delay={200}>
             <Card className="overflow-hidden bg-card/50 backdrop-blur-sm border-border/50">
               <div className="p-4 border-b border-border/30">
-                <h3 className="text-sm font-semibold text-foreground">Performance Statistics</h3>
+                <h3 className="text-sm font-semibold text-foreground">Статистика результатов</h3>
               </div>
               <div className="p-4 space-y-0">
                 {resultStats.map((item) => (
@@ -1453,7 +1453,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <AnimatedSection>
             <div className="text-center mb-10">
-              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Strategy Architecture</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Архитектура стратегии</h2>
               <p className="text-muted-foreground text-sm max-w-2xl mx-auto">
                 15 торговых систем на BTC и ETH. Полностью автоматизированное исполнение со встроенным контролем рисков.
               </p>
@@ -1508,7 +1508,7 @@ export default function Home() {
           <AnimatedSection>
             <div className="text-center mb-10">
               <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Как это работает</h2>
-              <p className="text-muted-foreground text-sm max-w-lg mx-auto">Algo trading via exchange API — simple and fast</p>
+              <p className="text-muted-foreground text-sm max-w-lg mx-auto">Алготрейдинг через API биржи — просто и быстро</p>
             </div>
           </AnimatedSection>
           <div className="flex flex-col sm:grid sm:grid-cols-3 gap-3 sm:gap-6">
@@ -1538,7 +1538,7 @@ export default function Home() {
           <AnimatedSection>
             <div className="text-center mb-10">
               <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Почему алгоритмическая торговля через API</h2>
-              <p className="text-muted-foreground text-sm max-w-lg mx-auto">Advantages of algorithmic trading</p>
+              <p className="text-muted-foreground text-sm max-w-lg mx-auto">Преимущества алгоритмической торговли</p>
             </div>
           </AnimatedSection>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -1565,7 +1565,7 @@ export default function Home() {
 
       <section className="py-12 px-4 sm:px-6 text-center">
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Ready to Connect?</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Готовы подключиться?</h2>
           <p className="text-muted-foreground text-sm mb-8 max-w-lg mx-auto">
             Свяжитесь с нашей командой. Расскажем о стратегии, подключении и онбординге.
           </p>
@@ -1574,8 +1574,8 @@ export default function Home() {
               "Лет опыта",
               "Тысячи аккаунтов",
               "Прозрачная статистика",
-              "10-minute setup",
-              "24/7 Support",
+              "Подключение за 10 минут",
+              "Поддержка 24/7",
               "Без перевода средств",
             ].map((text) => (
               <div key={text} className="flex items-center gap-2 pl-2">
@@ -1591,7 +1591,7 @@ export default function Home() {
               onClick={() => window.open("https://t.me/etheremax", "_blank")}
             >
               <Send className="w-4 h-4 mr-2" />
-              Contact via Telegram
+              Написать в Telegram
             </Button>
             <Button
               size="lg"
@@ -1599,7 +1599,7 @@ export default function Home() {
               onClick={() => window.open("https://wa.me/48883750965", "_blank")}
             >
               <SiWhatsapp className="w-4 h-4 mr-2" />
-              Contact via WhatsApp
+              Написать в WhatsApp
             </Button>
           </div>
         </div>
