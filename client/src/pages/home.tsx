@@ -1388,8 +1388,6 @@ function LegalDisclaimerModal() {
 const STRATEGY_SLUG_MAP: Record<string, StrategyKey> = {
   "basket-50": "basket50",
   "basket-70-tf": "basket70tf",
-  "algo-momentum": "basket50",
-  "algo-trend": "basket70tf",
 };
 
 const STRATEGY_URL_MAP: Record<StrategyKey, string> = {
