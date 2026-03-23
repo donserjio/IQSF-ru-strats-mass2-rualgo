@@ -310,7 +310,7 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
             <span className="text-lg font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent tracking-tight">Algotrading</span>
           </button>
 
-          <div className="hidden md:flex items-center gap-0.5 shrink-0">
+          <div className="hidden lg:flex items-center gap-0.5 shrink-0">
             <div className="w-px h-4 bg-border/50 mx-2" />
             {STRATEGY_OPTIONS.map((opt) => (
               <button
@@ -329,7 +329,7 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
             <div className="w-px h-4 bg-border/50 mx-2" />
           </div>
 
-          <div className="hidden md:flex items-center gap-1 ml-auto">
+          <div className="hidden lg:flex items-center gap-1 ml-auto">
             {NAV_ITEMS.map((item) => (
               <button
                 key={item.href}
@@ -361,7 +361,7 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
           </div>
 
           <button
-            className="md:hidden p-2 text-foreground ml-auto"
+            className="lg:hidden p-2 text-foreground ml-auto"
             onClick={() => setMobileOpen(!mobileOpen)}
             data-testid="button-mobile-menu"
           >
@@ -375,7 +375,7 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden bg-background/95 backdrop-blur-xl border-b border-border/50">
+        <div className="lg:hidden bg-background/95 backdrop-blur-xl border-b border-border/50">
           <div className="px-4 py-3 flex flex-col gap-1">
             <div className="flex gap-1 pb-2 border-b border-border/30 mb-1">
               {STRATEGY_OPTIONS.map((opt) => (
