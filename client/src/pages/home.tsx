@@ -549,9 +549,9 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
           <div>
             <AnimatedSection delay={400}>
               <div className="rounded-2xl border border-border/30 bg-card/30 backdrop-blur-sm p-5 sm:p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm text-muted-foreground font-medium">{sc.label}</span>
-                  <span className="text-lg sm:text-xl font-bold text-cyan-400 font-mono">
+                <div className="flex items-center justify-between mb-4 gap-2">
+                  <span className="text-sm text-muted-foreground font-medium shrink-0">{sc.label}</span>
+                  <span className="text-sm sm:text-base font-bold text-cyan-400 font-mono text-right">
                     Кривая доходности
                   </span>
                 </div>
