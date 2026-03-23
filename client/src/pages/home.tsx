@@ -837,18 +837,20 @@ function ChartPeriodFilter({
               month={leftMonth || minDate}
               onMonthChange={setLeftMonth}
             />
-            <CalendarPicker
-              mode="range"
-              selected={range}
-              onSelect={handleRangeSelect}
-              disabled={isDisabled}
-              numberOfMonths={1}
-              captionLayout="dropdown"
-              fromYear={minDate?.getFullYear()}
-              toYear={maxDate?.getFullYear()}
-              month={rightMonth || maxDate}
-              onMonthChange={setRightMonth}
-            />
+            <div className="hidden sm:block">
+              <CalendarPicker
+                mode="range"
+                selected={range}
+                onSelect={handleRangeSelect}
+                disabled={isDisabled}
+                numberOfMonths={1}
+                captionLayout="dropdown"
+                fromYear={minDate?.getFullYear()}
+                toYear={maxDate?.getFullYear()}
+                month={rightMonth || maxDate}
+                onMonthChange={setRightMonth}
+              />
+            </div>
           </div>
         </PopoverContent>
       </Popover>
