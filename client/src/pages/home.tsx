@@ -1324,14 +1324,20 @@ function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoadi
 
   const growthData = useMemo(() => {
     if (filteredEquity.length === 0) return [];
-    // Базовая точка — первая ненулевая точка выбранного периода (пересчёт с 0)
-    const basePoint = filteredEquity.find((d) => d.value !== 0 && isFinite(d.value));
-    if (!basePoint) return [];
-    const base = basePoint.value;
-    return filteredEquity.map((d) => ({
-      date: d.date,
-      value: isFinite(d.value) && base !== 0 ? startCapital * (d.value / base) : startCapital,
-    }));
+    // equity[i].value — кумулятивный % доходности от старта всей истории
+    // При фильтрации периода пересчитываем относительно первой точки периода
+    const baseIdx = filteredEquity.findIndex((d) => isFinite(d.value));
+    if (baseIdx === -1) return [];
+    const baseReturn = filteredEquity[baseIdx].value; // % на начало периода
+    return filteredEquity.map((d) => {
+      if (!isFinite(d.value)) return { date: d.date, value: startCapital };
+      // Прирост за период = (текущий % - базовый %) / (1 + базовый % / 100)
+      const periodReturn = (d.value - baseReturn) / (1 + baseReturn / 100);
+      return {
+        date: d.date,
+        value: Math.round(startCapital * (1 + periodReturn / 100)),
+      };
+    });
   }, [filteredEquity, startCapital]);
 
   const currentValue = growthData.length > 0 ? growthData[growthData.length - 1].value : startCapital;
