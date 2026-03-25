@@ -1088,9 +1088,9 @@ function StrategyOverviewSection({ sc }: { sc: StrategyConfig }) {
               <div className="space-y-4">
                 {[
                   { label: "Тип стратегии", value: sc.strategyType },
-                  { label: "Класс активов", value: "Крипто-перпетуалы (BTC, ETH)" },
-                  { label: "Горизонт удержания", value: sc.holdingPeriod },
-                  { label: "Стиль торговли", value: "Лонг/шорт, направленно гибкий" },
+                  { label: "Класс активов", value: "Бессрочные фьючерсы (BTC, ETH)" },
+                  { label: "Срок удержания позиций", value: sc.holdingPeriod },
+                  { label: "Стиль торговли", value: "Лонг и шорт" },
                   { label: "Портфель", value: "Систематический, диверсифицированный" },
                 ].map((item) => (
                   <div key={item.label} className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 py-3 border-b border-border/30 last:border-0">
