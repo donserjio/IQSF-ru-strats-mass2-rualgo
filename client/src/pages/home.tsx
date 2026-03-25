@@ -1778,7 +1778,7 @@ function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: bo
 const ACCESS_TERMS_BASE = [
   { label: "Мин. сумма", value: "$20,000" },
   { label: "Комиссия за управление", value: "0%" },
-  { label: "Комиссия за результат", value: "30%" },
+  { label: "Комиссия за результат", value: "35%" },
   { label: "High-water mark", value: "Применяется" },
   { label: "Lock-up период", value: "Отсутствует" },
   { label: "Распределение комиссий", value: "Раз в квартал" },
@@ -1843,7 +1843,7 @@ function buildFaqItems(sc: StrategyConfig) {
     },
     {
       q: "Какие комиссии?",
-      a: "Управление — 0%, плюс 30% от прибыли с high-water mark. Ежеквартально. Без lock-up.",
+      a: "Управление — 0%, плюс 35% от прибыли с high-water mark. Ежеквартально. Без lock-up.",
     },
     {
       q: "Какие биржи поддерживаются?",
@@ -2120,7 +2120,7 @@ export default function Home() {
             {[
               { step: "01", title: "Откройте счёт на бирже", desc: "Binance, OKX, Bybit, Bitget, BingX. Минимум — $20 000." },
               { step: "02", title: "Свяжитесь с нами", desc: "Telegram / WhatsApp. Подключение через API-ключ за 10 минут." },
-              { step: "03", title: "Алгоритм работает за вас", desc: "24/7 торговля. 30% от прибыли. Без lock-up." },
+              { step: "03", title: "Алгоритм работает за вас", desc: "24/7 торговля. 35% от прибыли. Без lock-up." },
             ].map((item) => (
               <AnimatedSection key={item.step} delay={parseInt(item.step) * 100}>
                 <div className="flex sm:flex-col items-center sm:text-center gap-4 sm:gap-0 p-4 sm:p-6 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm h-full">
@@ -2151,7 +2151,7 @@ export default function Home() {
               { icon: Shield, title: "Без перевода средств", desc: "Средства всегда на вашем биржевом счёте." },
               { icon: Wallet, title: "Вывод в любой момент", desc: "Без lock-up." },
               { icon: Eye, title: "Полная прозрачность", desc: "Каждая сделка видна в приложении биржи." },
-              { icon: PercentCircle, title: "Честная комиссия", desc: "30% только с прибыли." },
+              { icon: PercentCircle, title: "Честная комиссия", desc: "35% только с прибыли." },
             ].map((item, i) => (
               <AnimatedSection key={item.title} delay={i * 80}>
                 <div className="p-4 sm:p-6 rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm h-full text-center">
