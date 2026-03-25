@@ -1228,7 +1228,7 @@ function MonthlyReturnsSection({ stats, isLoading, strategyKey }: { stats?: Stat
             {isLoading || tableData.years.length === 0 ? (
               <Skeleton className="h-[300px] w-full" />
             ) : (
-              <table className="w-full text-xs sm:text-sm font-mono">
+              <table className="min-w-[600px] w-full text-xs sm:text-sm font-mono">
                 <thead>
                   <tr className="border-b border-border/30">
                     <th className="py-2 px-2 text-left text-cyan-400 font-semibold">Год</th>
