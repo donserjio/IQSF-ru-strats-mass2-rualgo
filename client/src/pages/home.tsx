@@ -1369,7 +1369,7 @@ function DailyPnlSection({ stats, isLoading, strategyKey }: { stats?: StatsData;
                         tickFormatter={(v: number) => `${v > 0 ? "+" : ""}${v.toFixed(1)}%`}
                         domain={[-yExtreme, yExtreme]} />
                       <Tooltip
-                        contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }}
+                        contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} labelStyle={{ color: "hsl(var(--foreground))", fontWeight: 600 }} itemStyle={{ color: "hsl(var(--foreground))" }}
                         formatter={(value: number) => [`${value >= 0 ? "+" : ""}${value.toFixed(4)}%`, "P&L"]}
                         labelFormatter={(label: string) => new Date(label + "T00:00:00").toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })} />
                       {refLeft && refRight && (
