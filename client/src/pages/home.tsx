@@ -1159,7 +1159,7 @@ function DrawdownChartSection({ stats, isLoading }: { stats?: StatsData; isLoadi
               <Skeleton className="h-[350px] w-full" />
             ) : (
               <>
-                <ChartPeriodFilter allData={allData} onFilter={setFilteredData} />
+                <ChartPeriodFilter allData={allData} onFilter={setFilteredData} rebaseOnFilter additiveRebase />
                 <ZoomableChart
                   data={filteredData}
                   color="#ef4444bb"
