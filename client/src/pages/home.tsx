@@ -1181,6 +1181,89 @@ function DrawdownChartSection({ stats, isLoading }: { stats?: StatsData; isLoadi
 }
 
 // ── Daily P&L ─────────────────────────────────────────────────────────────────
+const MONTH_LABELS_RU = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"];
+
+// ── Monthly Returns ───────────────────────────────────────────────────────────
+function MonthlyReturnsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; isLoading: boolean; strategyKey: StrategyKey }) {
+  const grid = stats?.monthlyGrid ?? [];
+
+  const tableData = useMemo(() => {
+    if (grid.length === 0) return { years: [] as number[], data: {} as Record<number, Record<number, number | null>>, yearTotals: {} as Record<number, number> };
+    const data: Record<number, Record<number, number | null>> = {};
+    for (const { ym, ret } of grid) {
+      const [y, m] = ym.split("-").map(Number);
+      if (!data[y]) data[y] = {};
+      data[y][m] = ret;
+    }
+    const years = Object.keys(data).map(Number).sort();
+    const yearTotals: Record<number, number> = {};
+    for (const y of years) {
+      const rets = Object.values(data[y]).filter((v): v is number => v !== null);
+      yearTotals[y] = (rets.reduce((acc, r) => acc * (1 + r / 100), 1) - 1) * 100;
+    }
+    return { years, data, yearTotals };
+  }, [grid, strategyKey]);
+
+  function cellColor(v: number | null | undefined) {
+    if (v == null) return "";
+    if (v > 0) return "text-emerald-400";
+    if (v < 0) return "text-red-400";
+    return "text-muted-foreground";
+  }
+
+  return (
+    <section id="monthly-returns" className="py-12 px-4 sm:px-6 relative" data-testid="section-monthly-returns">
+      <div className="max-w-7xl mx-auto">
+        <AnimatedSection>
+          <div className="text-center mb-10">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Помесячная доходность</h2>
+            <p className="text-muted-foreground text-sm max-w-lg mx-auto">
+              Результаты по месяцам с накопительным итогом по годам
+            </p>
+            <LiveDataBadge text="Обновляется ежедневно · Binance API" pulse={false} />
+          </div>
+        </AnimatedSection>
+        <AnimatedSection delay={100}>
+          <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6 overflow-x-auto">
+            {isLoading || tableData.years.length === 0 ? (
+              <Skeleton className="h-[300px] w-full" />
+            ) : (
+              <table className="w-full text-xs sm:text-sm font-mono">
+                <thead>
+                  <tr className="border-b border-border/30">
+                    <th className="py-2 px-2 text-left text-cyan-400 font-semibold">Год</th>
+                    {MONTH_LABELS_RU.map((m) => (
+                      <th key={m} className="py-2 px-1.5 text-center text-cyan-400 font-semibold">{m}</th>
+                    ))}
+                    <th className="py-2 px-2 text-center text-cyan-400 font-semibold border-l border-cyan-500/20 bg-cyan-500/5">Итог</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tableData.years.map((y) => (
+                    <tr key={y} className="border-b border-border/10 hover:bg-white/[0.02] transition-colors">
+                      <td className="py-2 px-2 text-cyan-400 font-semibold">{y}</td>
+                      {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => {
+                        const v = tableData.data[y]?.[m];
+                        return (
+                          <td key={m} className={`py-2 px-1.5 text-center rounded-sm ${cellColor(v)}`}>
+                            {v != null ? (v >= 0 ? "+" : "") + v.toFixed(2) + "%" : ""}
+                          </td>
+                        );
+                      })}
+                      <td className={`py-2 px-2 text-center font-bold border-l border-cyan-500/20 bg-cyan-500/5 ${cellColor(tableData.yearTotals[y])}`}>
+                        {(tableData.yearTotals[y] >= 0 ? "+" : "") + tableData.yearTotals[y].toFixed(2) + "%"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </Card>
+        </AnimatedSection>
+      </div>
+    </section>
+  );
+}
 function DailyPnlSection({ stats, isLoading, strategyKey }: { stats?: StatsData; isLoading: boolean; strategyKey: StrategyKey }) {
   const dailyData = stats?.dailyPnl ?? [];
   const [filteredData, setFilteredData] = useState(dailyData);
@@ -2050,6 +2133,7 @@ export default function Home() {
       <EquityChartSection stats={stats ?? undefined} isLoading={isLoading} strategyKey={strategy} />
       <DrawdownChartSection stats={stats ?? undefined} isLoading={isLoading} />
       <MetricsSection stats={stats ?? undefined} isLoading={isLoading} strategyKey={strategy} />
+      <MonthlyReturnsSection stats={stats ?? undefined} isLoading={isLoading} strategyKey={strategy} />
       <DailyPnlSection stats={stats ?? undefined} isLoading={isLoading} strategyKey={strategy} />
       <CapitalGrowthSection stats={stats ?? undefined} isLoading={isLoading} />
       <ResultsSection stats={stats ?? undefined} isLoading={isLoading} />
