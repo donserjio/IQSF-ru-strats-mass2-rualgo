@@ -1360,7 +1360,8 @@ function DailyPnlSection({ stats, isLoading, strategyKey }: { stats?: StatsData;
                         height={48}
                         tickFormatter={(v: string) => {
                           const d = new Date(v + "T00:00:00");
-                          return d.toLocaleDateString("ru-RU", { month: "short", year: "2-digit" });
+                          const year = d.getFullYear().toString().slice(-2);
+                          return d.toLocaleDateString("ru-RU", { month: "short" }) + " '" + year;
                         }}
                         interval={Math.max(0, Math.floor(displayData.length / 6) - 1)} />
                       <YAxis tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
