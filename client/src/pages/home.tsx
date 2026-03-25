@@ -1355,9 +1355,8 @@ function DailyPnlSection({ stats, isLoading, strategyKey }: { stats?: StatsData;
                       onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
                       <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
                       <XAxis dataKey="date"
-                        tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 9, angle: -35, textAnchor: "end", dy: 4 }}
+                        tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 9 }}
                         tickLine={false} axisLine={{ stroke: "hsl(var(--border))" }}
-                        height={48}
                         tickFormatter={(v: string) => {
                           const d = new Date(v + "T00:00:00");
                           const year = d.getFullYear().toString().slice(-2);
@@ -1369,9 +1368,24 @@ function DailyPnlSection({ stats, isLoading, strategyKey }: { stats?: StatsData;
                         tickFormatter={(v: number) => `${v > 0 ? "+" : ""}${v.toFixed(1)}%`}
                         domain={[-yExtreme, yExtreme]} />
                       <Tooltip
-                        contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} labelStyle={{ color: "hsl(var(--foreground))", fontWeight: 600 }} itemStyle={{ color: "hsl(var(--foreground))" }}
-                        formatter={(value: number) => [`${value >= 0 ? "+" : ""}${value.toFixed(4)}%`, "P&L"]}
-                        labelFormatter={(label: string) => new Date(label + "T00:00:00").toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })} />
+                        content={({ active, payload, label }: any) => {
+                          if (!active || !payload?.length) return null;
+                          const val = payload[0].value as number;
+                          if (val == null) return null;
+                          const dateStr = new Date(label + "T00:00:00").toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" });
+                          const formatted = `${val >= 0 ? "+" : ""}${val.toFixed(4)}%`;
+                          return (
+                            <div className="bg-card border border-border rounded-lg px-4 py-3 shadow-xl min-w-[200px]">
+                              <p className="text-sm font-bold text-foreground mb-2">{dateStr}</p>
+                              <div className="flex items-center justify-between gap-6">
+                                <span className="text-xs text-muted-foreground">P&amp;L</span>
+                                <span className={`text-sm font-bold font-mono ${val >= 0 ? "text-cyan-400" : "text-red-400"}`}>{formatted}</span>
+                              </div>
+                              <ChartLiveBadge text="Реальный счёт · Обновляется ежедневно" />
+                            </div>
+                          );
+                        }}
+                        />
                       {refLeft && refRight && (
                         <ReferenceArea x1={refLeft} x2={refRight} strokeOpacity={0.3} fill="rgba(6,182,212,0.08)" />
                       )}
