@@ -824,10 +824,10 @@ function ChartPeriodFilter({
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-1.5 overflow-x-auto" data-testid="chart-period-filter">
+    <div className="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-none" data-testid="chart-period-filter">
       <button
         onClick={() => applyYearOrAll("all")}
-        className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${active === "all" ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40" : "bg-background/50 border border-border/50 text-muted-foreground hover:text-foreground"}`}
+        className={`px-3 py-1 rounded-md text-xs font-medium transition-all whitespace-nowrap flex-shrink-0 ${active === "all" ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40" : "bg-background/50 border border-border/50 text-muted-foreground hover:text-foreground"}`}
         data-testid="button-filter-all"
       >
         Всё время
@@ -836,7 +836,7 @@ function ChartPeriodFilter({
         <button
           key={y}
           onClick={() => applyYearOrAll(y)}
-          className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${active === y ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40" : "bg-background/50 border border-border/50 text-muted-foreground hover:text-foreground"}`}
+          className={`px-3 py-1 rounded-md text-xs font-medium transition-all whitespace-nowrap flex-shrink-0 ${active === y ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40" : "bg-background/50 border border-border/50 text-muted-foreground hover:text-foreground"}`}
           data-testid={`button-filter-${y}`}
         >
           {y}
@@ -845,7 +845,7 @@ function ChartPeriodFilter({
       <Popover open={calOpen} onOpenChange={setCalOpen}>
         <PopoverTrigger asChild>
           <button
-            className={`px-3 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 ${range?.from ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40" : "bg-background/50 border border-border/50 text-muted-foreground hover:text-foreground"}`}
+            className={`px-3 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1 whitespace-nowrap flex-shrink-0 ${range?.from ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40" : "bg-background/50 border border-border/50 text-muted-foreground hover:text-foreground"}`}
             data-testid="button-filter-calendar"
           >
             <CalendarRange className="w-3 h-3" />
