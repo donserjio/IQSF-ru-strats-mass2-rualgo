@@ -1144,7 +1144,7 @@ function DrawdownChartSection({ stats, isLoading }: { stats?: StatsData; isLoadi
       <div className="max-w-5xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Просадка (Drawdown)</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Просадка</h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
               Снижение от пика на составной основе эквити
             </p>
@@ -1261,7 +1261,7 @@ function DailyPnlSection({ stats, isLoading, strategyKey }: { stats?: StatsData;
                 {isZoomed && (
                   <div className="flex justify-end mb-2">
                     <Button variant="outline" size="sm" className="text-xs border-border/50" onClick={() => setZoomedData(null)}>
-                      Сбросить zoom
+                      Сбросить
                     </Button>
                   </div>
                 )}
@@ -1310,6 +1310,9 @@ function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoadi
   const equityData = stats?.equity ?? [];
   const [startCapital, setStartCapital] = useState(10000);
   const [inputValue, setInputValue] = useState("10000");
+  const [filteredEquity, setFilteredEquity] = useState(equityData);
+
+  useEffect(() => { setFilteredEquity(equityData); }, [stats]);
 
   const presets = [
     { label: "$1K", value: 1000 },
@@ -1320,16 +1323,16 @@ function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoadi
   ];
 
   const growthData = useMemo(() => {
-    if (equityData.length === 0) return [];
-    // Найти первую ненулевую базовую точку
-    const basePoint = equityData.find((d) => d.value !== 0 && isFinite(d.value));
+    if (filteredEquity.length === 0) return [];
+    // Базовая точка — первая ненулевая точка выбранного периода (пересчёт с 0)
+    const basePoint = filteredEquity.find((d) => d.value !== 0 && isFinite(d.value));
     if (!basePoint) return [];
     const base = basePoint.value;
-    return equityData.map((d) => ({
+    return filteredEquity.map((d) => ({
       date: d.date,
       value: isFinite(d.value) && base !== 0 ? startCapital * (d.value / base) : startCapital,
     }));
-  }, [equityData, startCapital]);
+  }, [filteredEquity, startCapital]);
 
   const currentValue = growthData.length > 0 ? growthData[growthData.length - 1].value : startCapital;
   const profit = currentValue - startCapital;
@@ -1410,6 +1413,9 @@ function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoadi
               </Card>
             </div>
 
+            {equityData.length > 0 && (
+              <ChartPeriodFilter allData={equityData} onFilter={setFilteredEquity} rebaseOnFilter={false} />
+            )}
             {isLoading || growthData.length === 0 ? (
               <Skeleton className="h-[250px] w-full" />
             ) : (
