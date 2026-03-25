@@ -824,7 +824,7 @@ function ChartPeriodFilter({
   }
 
   return (
-    <div className="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-none" data-testid="chart-period-filter">
+    <div className="flex flex-wrap items-center gap-1.5" data-testid="chart-period-filter">
       <button
         onClick={() => applyYearOrAll("all")}
         className={`px-3 py-1 rounded-md text-xs font-medium transition-all whitespace-nowrap flex-shrink-0 ${active === "all" ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40" : "bg-background/50 border border-border/50 text-muted-foreground hover:text-foreground"}`}
