@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Calendar as CalendarPicker } from "@/components/ui/calendar";
+
 import {
   Popover,
   PopoverContent,
@@ -1307,57 +1308,123 @@ function DailyPnlSection({ stats, isLoading, strategyKey }: { stats?: StatsData;
 
 // ── Capital Growth ────────────────────────────────────────────────────────────
 function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
-  const equityData = stats?.equity ?? [];
-  const [startCapital, setStartCapital] = useState(300000);
-  const [filteredEquity, setFilteredEquity] = useState(equityData);
-
-  useEffect(() => { setFilteredEquity(equityData); }, [stats]);
-
-  const presets = [
-    { label: "$300K", value: 300000 },
-    { label: "$500K", value: 500000 },
-    { label: "$1M", value: 1000000 },
-    { label: "$2M", value: 2000000 },
-    { label: "$5M", value: 5000000 },
+  const CAPITALS = [
+    { label: "$300K", value: 300_000 },
+    { label: "$500K", value: 500_000 },
+    { label: "$1M", value: 1_000_000 },
+    { label: "$2M", value: 2_000_000 },
+    { label: "$5M", value: 5_000_000 },
   ];
 
-  const growthData = useMemo(() => {
-    if (filteredEquity.length === 0) return [];
-    // equity[i].value — кумулятивный % доходности от старта всей истории
-    // При фильтрации периода пересчитываем относительно первой точки периода
-    const baseIdx = filteredEquity.findIndex((d) => isFinite(d.value));
-    if (baseIdx === -1) return [];
-    const baseReturn = filteredEquity[baseIdx].value; // % на начало периода
-    return filteredEquity.map((d) => {
-      if (!isFinite(d.value)) return { date: d.date, value: startCapital };
-      // Прирост за период = (текущий % - базовый %) / (1 + базовый % / 100)
-      const periodReturn = (d.value - baseReturn) / (1 + baseReturn / 100);
-      return {
-        date: d.date,
-        value: Math.round(startCapital * (1 + periodReturn / 100)),
-      };
-    });
-  }, [filteredEquity, startCapital]);
+  const [capitalIdx, setCapitalIdx] = useState(0);
+  const [sliderIdx, setSliderIdx] = useState(0);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const capital = CAPITALS[capitalIdx].value;
 
-  const currentValue = growthData.length > 0 ? growthData[growthData.length - 1].value : startCapital;
-  const profit = currentValue - startCapital;
-  const profitPct = startCapital > 0 ? (profit / startCapital) * 100 : 0;
+  const equityData = stats?.equity ?? [];
+  const firstDate = equityData[0]?.date ?? "";
+  const lastDate = equityData[equityData.length - 1]?.date ?? "";
+  const [startDate, setStartDate] = useState(firstDate);
 
+  useEffect(() => {
+    if (firstDate && !startDate) setStartDate(firstDate);
+  }, [firstDate]);
+
+  const handleSetStartDate = useCallback((date: string) => {
+    setStartDate(date);
+    setHasInteracted(true);
+  }, []);
+
+  useEffect(() => {
+    setSliderIdx(0);
+    setHasInteracted(false);
+  }, [capitalIdx]);
+
+  const chartData = useMemo(() => {
+    const startIdx = Math.max(0, equityData.findIndex((d) => d.date >= startDate));
+    const baseEquity = 1 + (equityData[startIdx]?.value ?? 0) / 100;
+    return equityData.slice(startIdx).map((d) => ({
+      date: d.date,
+      value: capital * (1 + d.value / 100) / baseEquity,
+    }));
+  }, [equityData, capital, startDate]);
+
+  const maxIdx = Math.max(0, chartData.length - 1);
+
+  useEffect(() => {
+    if (hasInteracted) setSliderIdx(0);
+  }, [startDate]);
+
+  const visibleData = useMemo(() => chartData.slice(0, sliderIdx + 1), [chartData, sliderIdx]);
+  const chartDisplayData = useMemo(() => chartData.map((d, i) => ({
+    ...d,
+    displayValue: i <= sliderIdx ? d.value : null,
+  })), [chartData, sliderIdx]);
+
+  const currentValue = visibleData.length > 0 ? visibleData[visibleData.length - 1].value : capital;
+  const profit = currentValue - capital;
+  const currentDate = visibleData.length > 0 ? visibleData[visibleData.length - 1].date : chartData[0]?.date ?? "";
+
+  const peakValue = useMemo(() => {
+    if (visibleData.length === 0) return capital;
+    return Math.max(...visibleData.map((d) => d.value));
+  }, [visibleData, capital]);
+  const currentDDPct = peakValue > 0 ? ((currentValue - peakValue) / peakValue) * 100 : 0;
+  const currentDDDollar = currentValue - peakValue;
+
+  const maxDrawdown = useMemo(() => {
+    if (visibleData.length < 2) return { pct: 0, dollar: 0 };
+    let peak = visibleData[0].value;
+    let worstPct = 0;
+    let worstDollar = 0;
+    for (const d of visibleData) {
+      if (d.value > peak) peak = d.value;
+      const ddPct = (d.value - peak) / peak * 100;
+      if (ddPct < worstPct) { worstPct = ddPct; worstDollar = d.value - peak; }
+    }
+    return { pct: worstPct, dollar: worstDollar };
+  }, [visibleData]);
+
+  const availableYears = useMemo(() => {
+    if (equityData.length === 0) return [];
+    const seen = new Set<string>();
+    return equityData.map((d) => d.date.substring(0, 4))
+      .filter((y) => { if (seen.has(y)) return false; seen.add(y); return true; })
+      .sort();
+  }, [equityData]);
+
+  const yMin = useMemo(() => visibleData.length < 2 ? capital * 0.8 : Math.min(...visibleData.map((d) => d.value)) * 0.97, [visibleData, capital]);
+  const yMax = useMemo(() => visibleData.length < 2 ? capital * 1.2 : Math.max(...visibleData.map((d) => d.value)) * 1.03, [visibleData, capital]);
+
+  function fmtDollar(v: number) {
+    const abs = Math.abs(v);
+    const sign = v < 0 ? "-" : "+";
+    if (abs >= 1_000_000) return sign + "$" + (abs / 1_000_000).toFixed(2) + "M";
+    if (abs >= 1_000) return sign + "$" + Math.round(abs / 1_000) + "K";
+    return sign + "$" + Math.round(abs);
+  }
   function fmtValue(v: number) {
-    if (!isFinite(v) || isNaN(v)) return "—";
     if (v >= 1_000_000) return "$" + (v / 1_000_000).toFixed(2) + "M";
     if (v >= 1_000) return "$" + Math.round(v / 1_000) + "K";
     return "$" + Math.round(v);
   }
+  function fmtYAxis(v: number) {
+    if (v >= 1_000_000) return "$" + (v / 1_000_000).toFixed(1) + "M";
+    if (v >= 100_000) return "$" + Math.round(v / 1_000) + "K";
+    if (v >= 1_000) return "$" + (v / 1_000).toFixed(1) + "K";
+    return "$" + Math.round(v);
+  }
+
+  const sliderPct = maxIdx > 0 ? (sliderIdx / maxIdx) * 100 : 0;
 
   return (
-    <section id="capital-growth" className="py-12 px-4 sm:px-6 relative" data-testid="section-capital-growth">
+    <section id="capital-growth" className="py-20 px-4 sm:px-6 relative" data-testid="section-capital-growth">
       <div className="max-w-5xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Рост капитала</h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Выберите сумму и посмотрите как рос бы ваш капитал вместе со стратегией
+              Перетащите ползунок и посмотрите как рос бы ваш капитал вместе со стратегией
             </p>
             <LiveDataBadge text="На основе реальных торговых данных" pulse={false} />
           </div>
@@ -1365,74 +1432,189 @@ function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoadi
 
         <AnimatedSection delay={100}>
           <Card className="p-6 sm:p-8 bg-card/50 backdrop-blur-sm border-border/50">
-            <div className="mb-6">
-              <p className="text-sm text-muted-foreground text-center mb-4">Начальный капитал</p>
-              <div className="flex flex-wrap justify-center gap-2 mb-4">
-                {presets.map((p) => (
-                  <button key={p.label} onClick={() => setStartCapital(p.value)}
-                    className={`px-4 py-2 rounded-md text-sm font-semibold transition-all ${
-                      startCapital === p.value
-                        ? "bg-gradient-to-r from-cyan-600/80 to-blue-700/80 text-white"
+            <div className="mb-8">
+              <p className="text-sm text-muted-foreground text-center sm:text-left mb-4">Начальный капитал</p>
+              <div className="flex flex-wrap justify-center sm:justify-start gap-2">
+                {CAPITALS.map((c, i) => (
+                  <button key={c.label} onClick={() => setCapitalIdx(i)}
+                    className={`px-5 py-2 rounded-md text-sm font-semibold transition-all ${
+                      capitalIdx === i
+                        ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20"
                         : "bg-background/50 border border-border/50 text-muted-foreground hover:text-foreground hover:border-cyan-500/40"
                     }`}>
-                    {p.label}
+                    {c.label}
                   </button>
                 ))}
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 mb-6">
-              <Card className="p-4 bg-background/50 border-border/30 text-center">
-                <p className="text-xs text-muted-foreground mb-1">Начальный капитал</p>
-                <p className="text-xl font-bold font-mono text-foreground">{fmtValue(startCapital)}</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
+              <Card className="p-4 bg-background/50 border-border/30 text-center h-[88px] flex flex-col justify-center">
+                <p className="text-xs text-muted-foreground mb-2">Старт</p>
+                <p className="text-xl sm:text-2xl font-bold font-mono text-foreground">{fmtValue(capital)}</p>
               </Card>
-              <Card className="p-4 bg-background/50 border-border/30 text-center">
-                <p className="text-xs text-muted-foreground mb-1">Текущая стоимость</p>
-                <p className="text-xl font-bold font-mono text-blue-400">{fmtValue(currentValue)}</p>
+              <Card className="p-4 bg-background/50 border-border/30 text-center h-[88px] flex flex-col justify-center">
+                <p className="text-xs text-muted-foreground mb-2">Текущая стоимость</p>
+                <p className="text-xl sm:text-2xl font-bold font-mono text-blue-400">{fmtValue(currentValue)}</p>
               </Card>
-              <Card className="p-4 bg-background/50 border-border/30 text-center">
-                <p className="text-xs text-muted-foreground mb-1">Прибыль / Убыток</p>
-                <p className={`text-xl font-bold font-mono ${profit >= 0 ? "text-cyan-400" : "text-red-400"}`}>
-                  {profit >= 0 ? "+" : ""}{fmtValue(Math.abs(profit))}
+              <Card className="p-4 bg-background/50 border-border/30 text-center h-[88px] flex flex-col justify-center">
+                <p className="text-xs text-muted-foreground mb-0.5">Прибыль / Убыток</p>
+                <p className={`text-xl sm:text-2xl font-bold font-mono ${profit >= 0 ? "text-cyan-400" : "text-red-400"}`}>
+                  {fmtDollar(profit)}
                 </p>
-                <p className={`text-xs font-mono ${profit >= 0 ? "text-cyan-400/70" : "text-red-400/70"}`}>
-                  {profit >= 0 ? "+" : ""}{profitPct.toFixed(2)}%
+                <p className={`text-[10px] font-mono ${profit >= 0 ? "text-cyan-400/70" : "text-red-400/70"}`}>
+                  {profit >= 0 ? "+" : ""}{((profit / capital) * 100).toFixed(2)}%
+                </p>
+              </Card>
+              <Card className="p-4 bg-background/50 border-border/30 text-center h-[88px] flex flex-col justify-center">
+                <p className="text-xs text-muted-foreground mb-0.5">Текущая просадка</p>
+                <p className={`text-xl sm:text-2xl font-bold font-mono ${currentDDPct < -0.01 ? "text-red-400" : "text-muted-foreground/50"}`}>
+                  {currentDDPct < -0.01 ? currentDDPct.toFixed(2) + "%" : "—"}
+                </p>
+                <p className={`text-[10px] font-mono ${currentDDPct < -0.01 ? "text-red-400/70" : "text-transparent"}`}>
+                  {currentDDPct < -0.01 ? fmtDollar(currentDDDollar) : " "}
+                </p>
+              </Card>
+              <Card className="p-4 bg-background/50 border-border/30 text-center h-[88px] flex flex-col justify-center">
+                <p className="text-xs text-muted-foreground mb-0.5">Макс. просадка</p>
+                <p className={`text-xl sm:text-2xl font-bold font-mono ${maxDrawdown.pct < -0.01 ? "text-red-400" : "text-muted-foreground/50"}`}>
+                  {maxDrawdown.pct < -0.01 ? maxDrawdown.pct.toFixed(2) + "%" : "—"}
+                </p>
+                <p className="text-[10px] font-mono text-transparent">{" "}</p>
+              </Card>
+              <Card className="p-4 bg-background/50 border-border/30 text-center h-[88px] flex flex-col justify-center">
+                <p className="text-xs text-muted-foreground mb-2">По состоянию на</p>
+                <p className="text-base sm:text-lg font-bold font-mono text-muted-foreground">
+                  {currentDate ? new Date(currentDate).toLocaleDateString("ru-RU", { month: "short", year: "numeric" }) : "—"}
                 </p>
               </Card>
             </div>
 
-            {equityData.length > 0 && (
-              <ChartPeriodFilter allData={equityData} onFilter={setFilteredEquity} rebaseOnFilter={false} />
-            )}
-            {isLoading || growthData.length === 0 ? (
-              <Skeleton className="h-[250px] w-full" />
-            ) : (
-              <div className="h-[250px] sm:h-[300px]">
+            <div className="relative h-64 sm:h-80 mb-2">
+              {visibleData.length < 2 ? (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 pointer-events-none select-none">
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="text-lg sm:text-xl font-semibold text-cyan-400/80 animate-pulse tracking-wide">
+                      Перетащите ползунок чтобы увидеть рост
+                    </span>
+                    <div className="flex items-center gap-2 text-cyan-400/60">
+                      <span className="text-2xl">←</span>
+                      <div className="w-12 h-1 rounded-full bg-gradient-to-r from-cyan-500/60 to-blue-500/60" />
+                      <span className="text-2xl">→</span>
+                    </div>
+                  </div>
+                </div>
+              ) : (
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={growthData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+                  <AreaChart data={chartDisplayData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
                     <defs>
-                      <linearGradient id="capitalGrowthGrad" x1="0" y1="0" x2="0" y2="1">
+                      <linearGradient id="growthGradientRU" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.3} />
                         <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
-                    <XAxis dataKey="date" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }} tickLine={false}
-                      axisLine={{ stroke: "hsl(var(--border))" }}
-                      tickFormatter={(v: string) => new Date(v + "T00:00:00").toLocaleDateString("ru-RU", { month: "short", year: "2-digit" })}
-                      interval={Math.max(0, Math.floor(growthData.length / 6) - 1)} />
-                    <YAxis tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }} tickLine={false} axisLine={false}
-                      tickFormatter={(v: number) => fmtValue(v)} />
+                    <XAxis dataKey="date" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, dy: 8 }}
+                      tickLine={false} axisLine={{ stroke: "hsl(var(--border))" }}
+                      tickFormatter={(v: string) => {
+                        const d = new Date(v);
+                        const spanDays = chartData.length;
+                        if (spanDays <= 180) return d.toLocaleDateString("ru-RU", { month: "short", day: "numeric" });
+                        if (spanDays <= 730) return d.toLocaleDateString("ru-RU", { month: "short", year: "2-digit" });
+                        return d.getFullYear().toString();
+                      }}
+                      interval={Math.max(1, Math.floor(chartData.length / 6))}
+                    />
+                    <YAxis tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }} tickLine={false}
+                      axisLine={false} tickFormatter={fmtYAxis} width={65}
+                      domain={[yMin, yMax]} allowDataOverflow tickCount={6}
+                    />
                     <Tooltip
-                      contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }}
-                      formatter={(value: number) => [fmtValue(value), "Капитал"]}
-                      labelFormatter={(label: string) => new Date(label + "T00:00:00").toLocaleDateString("ru-RU", { month: "long", year: "numeric" })} />
-                    <Area type="monotone" dataKey="value" stroke="#06b6d4" strokeWidth={2}
-                      fill="url(#capitalGrowthGrad)" dot={false} activeDot={{ r: 4, fill: "#06b6d4" }} />
+                      content={({ active, payload, label }: any) => {
+                        if (!active || !payload?.length) return null;
+                        const val = payload[0].value;
+                        if (val == null) return null;
+                        const dateStr = new Date(label).toLocaleDateString("ru-RU", { month: "long", day: "numeric", year: "numeric" });
+                        const returnPct = ((val - capital) / capital) * 100;
+                        const returnStr = `${returnPct >= 0 ? "+" : ""}${returnPct.toFixed(2)}%`;
+                        return (
+                          <div className="bg-card border border-border rounded-lg px-4 py-3 shadow-xl min-w-[220px]">
+                            <p className="text-sm font-bold text-foreground mb-2">{dateStr}</p>
+                            <div className="flex items-center justify-between gap-6 mb-1">
+                              <span className="text-xs text-muted-foreground">Портфель</span>
+                              <span className="text-sm font-bold font-mono text-foreground">{fmtValue(val)}</span>
+                            </div>
+                            <div className="flex items-center justify-between gap-6">
+                              <span className="text-xs text-muted-foreground">Доходность</span>
+                              <span className={`text-sm font-bold font-mono ${returnPct >= 0 ? "text-cyan-400" : "text-red-400"}`}>{returnStr}</span>
+                            </div>
+                          </div>
+                        );
+                      }}
+                    />
+                    <Area type="linear" dataKey="displayValue" stroke="#06b6d4" connectNulls={false}
+                      strokeWidth={1.5} fill="url(#growthGradientRU)" dot={false}
+                      activeDot={{ r: 4, fill: "#06b6d4", stroke: "#0a0e27", strokeWidth: 2 }}
+                      isAnimationActive={false}
+                    />
                   </AreaChart>
                 </ResponsiveContainer>
+              )}
+            </div>
+
+            <div className="px-1 mb-2">
+              <div className="relative">
+                <input type="range" min={0} max={maxIdx} step={1} value={sliderIdx}
+                  onChange={(e) => { setSliderIdx(Number(e.target.value)); if (!hasInteracted) setHasInteracted(true); }}
+                  className="w-full h-3 appearance-none rounded-full cursor-ew-resize growth-slider"
+                  style={{ background: `linear-gradient(to right, #06b6d4 0%, #3b82f6 ${sliderPct}%, hsl(var(--border)) ${sliderPct}%, hsl(var(--border)) 100%)` }}
+                />
+                {!hasInteracted && (
+                  <div className="absolute -top-9 left-0 flex items-center gap-2 pointer-events-none select-none">
+                    <span className="text-sm font-semibold text-cyan-400 animate-pulse">← Перетащите ползунок →</span>
+                  </div>
+                )}
               </div>
-            )}
+              <div className="flex items-start justify-between mt-3 gap-4">
+                <div className="flex flex-wrap gap-1.5">
+                  {availableYears.map((y) => {
+                    const yearStart = equityData.find((d) => d.date.startsWith(y))?.date ?? "";
+                    const isActive = startDate === yearStart;
+                    return (
+                      <button key={y} onClick={() => handleSetStartDate(yearStart)}
+                        className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
+                          isActive
+                            ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40"
+                            : "bg-background/50 border border-border/50 text-muted-foreground hover:text-foreground hover:border-cyan-500/40"
+                        }`}>
+                        {y}
+                      </button>
+                    );
+                  })}
+                </div>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button className="bg-background/50 border border-border/50 text-foreground text-xs font-mono rounded-md px-2.5 py-1.5 cursor-pointer focus:outline-none focus:border-cyan-500/60 hover:border-cyan-500/40 transition-colors flex items-center gap-1.5">
+                      <CalendarRange className="w-3 h-3 text-muted-foreground" />
+                      {startDate ? new Date(startDate + "T00:00:00").toLocaleDateString("ru-RU", { month: "short", day: "numeric", year: "numeric" }) : "Выбрать дату"}
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="end">
+                    <CalendarPicker mode="single" captionLayout="dropdown"
+                      selected={startDate ? new Date(startDate + "T00:00:00") : undefined}
+                      onSelect={(d: Date | undefined) => { if (d) handleSetStartDate(d.toISOString().substring(0, 10)); }}
+                      fromDate={firstDate ? new Date(firstDate + "T00:00:00") : undefined}
+                      toDate={lastDate ? new Date(lastDate + "T00:00:00") : undefined}
+                      defaultMonth={startDate ? new Date(startDate + "T00:00:00") : undefined}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </div>
+            <p className="text-[10px] text-muted-foreground/40 text-center mt-3">
+              На основе исторических данных реальной торговли. Прошлые результаты не гарантируют будущей доходности.
+            </p>
           </Card>
         </AnimatedSection>
       </div>
