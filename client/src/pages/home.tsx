@@ -26,10 +26,23 @@ import {
   Wallet,
   Eye,
   PercentCircle,
+  Download,
+  FileText,
+  Activity,
+  Layers,
 } from "lucide-react";
+import {
+  Tooltip as UITooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   AreaChart,
   Area,
+  BarChart,
+  Bar,
+  Cell,
   XAxis,
   YAxis,
   Tooltip,
@@ -529,7 +542,7 @@ function HeroSection({ stats, sc }: { stats?: StatsData; sc: StrategyConfig }) {
               <div className="flex flex-nowrap gap-3 w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="flex-1 sm:flex-none bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold px-5 py-4 sm:px-8 sm:py-6 text-sm sm:text-base rounded-xl cta-pulse transition-all"
+                  className="flex-1 sm:flex-none bg-gradient-to-r from-cyan-600/80 to-blue-700/80 text-white font-bold px-5 py-4 sm:px-8 sm:py-6 text-sm sm:text-base rounded-xl cta-pulse transition-all"
                   onClick={() => window.open("https://t.me/etheremax", "_blank")}
                 >
                   Подключиться
@@ -592,7 +605,7 @@ function ExchangesBar() {
       <div className="max-w-5xl mx-auto text-center">
         <AnimatedSection>
           <p className="text-lg sm:text-xl text-white font-semibold mb-8 tracking-wide">
-            Наши партнёрские биржи
+            Работаем на биржах
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             {exchanges.map((ex) => (
@@ -704,6 +717,19 @@ function MetricsSection({ stats, isLoading, strategyKey }: { stats?: StatsData; 
             </AnimatedSection>
           ))}
         </div>
+        {strategyKey && (
+          <div className="flex justify-center mt-6">
+            <a
+              href={`/api/quantstats?strategy=${strategyKey}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border/50 text-sm text-muted-foreground hover:text-foreground hover:border-border transition-colors bg-card/30"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              QuantStats Report
+            </a>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -1035,6 +1061,385 @@ function ZoomableChart({
   );
 }
 
+// ── Strategy Overview ────────────────────────────────────────────────────────
+function StrategyOverviewSection({ sc }: { sc: StrategyConfig }) {
+  return (
+    <section id="strategy" className="py-12 px-4 sm:px-6 relative" data-testid="section-strategy">
+      <div className="max-w-5xl mx-auto">
+        <AnimatedSection>
+          <div className="text-center mb-10">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">О стратегии</h2>
+            <p className="text-muted-foreground text-sm max-w-2xl mx-auto">
+              {sc.label} — систематический портфель на основе {sc.approachFull}.<br />
+              IQ Security Fund управляет торговлей через API-подключение к субаккаунту биржи клиента, без доступа к его средствам.
+            </p>
+          </div>
+        </AnimatedSection>
+
+        <div className="grid lg:grid-cols-2 gap-6">
+          <AnimatedSection>
+            <Card className="p-6 bg-card/50 backdrop-blur-sm border-border/50 h-full">
+              <h3 className="text-lg font-semibold text-foreground mb-5 flex items-center gap-2">
+                <Layers className="w-5 h-5 text-cyan-400" />
+                Параметры стратегии
+              </h3>
+              <div className="space-y-4">
+                {[
+                  { label: "Тип стратегии", value: sc.strategyType },
+                  { label: "Класс активов", value: "Крипто-перпетуалы (BTC, ETH)" },
+                  { label: "Горизонт удержания", value: sc.holdingPeriod },
+                  { label: "Стиль торговли", value: "Лонг/шорт, направленно гибкий" },
+                  { label: "Портфель", value: "Систематический, диверсифицированный" },
+                ].map((item) => (
+                  <div key={item.label} className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 py-3 border-b border-border/30 last:border-0">
+                    <span className="text-sm text-muted-foreground">{item.label}</span>
+                    <span className="text-sm font-medium text-foreground font-mono">{item.value}</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </AnimatedSection>
+
+          <AnimatedSection delay={150}>
+            <Card className="p-6 bg-card/50 backdrop-blur-sm border-border/50 h-full flex flex-col">
+              <h3 className="text-lg font-semibold text-foreground mb-5 flex items-center gap-2">
+                <Activity className="w-5 h-5 text-cyan-400" />
+                Торговая логика
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-6">{sc.archDesc}</p>
+              <div className="mt-auto grid grid-cols-2 gap-3">
+                {[
+                  { val: "12+", desc: "Лет исследований" },
+                  { val: sc.key === "basket70tf" ? "3" : "2", desc: "Типа подхода" },
+                  { val: "2", desc: "Торговых пары" },
+                  { val: "24/7", desc: "Автоматически" },
+                ].map((s) => (
+                  <div key={s.desc} className="bg-background/50 rounded-md p-3 text-center">
+                    <div className="text-lg font-bold font-mono text-cyan-400">{s.val}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">{s.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </AnimatedSection>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Drawdown Chart ────────────────────────────────────────────────────────────
+function DrawdownChartSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
+  const allData = (stats?.drawdownChart || []).map((d) => ({ date: d.date, value: d.value }));
+  const [filteredData, setFilteredData] = useState(allData);
+
+  useEffect(() => {
+    setFilteredData(allData);
+  }, [stats]);
+
+  return (
+    <section className="py-12 px-4 sm:px-6 relative" data-testid="section-drawdown-chart">
+      <div className="max-w-5xl mx-auto">
+        <AnimatedSection>
+          <div className="text-center mb-10">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Просадка (Drawdown)</h2>
+            <p className="text-muted-foreground text-sm max-w-lg mx-auto">
+              Снижение от пика на составной основе эквити
+            </p>
+            <LiveDataBadge text="История просадок реального счёта" pulse={false} />
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection delay={100}>
+          <Card className="overflow-visible bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6">
+            {isLoading || allData.length === 0 ? (
+              <Skeleton className="h-[350px] w-full" />
+            ) : (
+              <>
+                <ChartPeriodFilter allData={allData} onFilter={setFilteredData} rebaseOnFilter drawdownRebase />
+                <ZoomableChart
+                  data={filteredData}
+                  color="#ef4444bb"
+                  gradientId="drawdownGrad"
+                  valueSuffix="%"
+                  valueLabel="Drawdown"
+                  valueDecimals={4}
+                  height="h-[250px] sm:h-[300px]"
+                  yearlyTicks
+                  liveBadgeText="Реальные торговые данные · Обновляется ежедневно"
+                />
+              </>
+            )}
+          </Card>
+        </AnimatedSection>
+      </div>
+    </section>
+  );
+}
+
+// ── Daily P&L ─────────────────────────────────────────────────────────────────
+function DailyPnlSection({ stats, isLoading, strategyKey }: { stats?: StatsData; isLoading: boolean; strategyKey: StrategyKey }) {
+  const dailyData = stats?.dailyPnl ?? [];
+  const [filteredData, setFilteredData] = useState(dailyData);
+  const [zoomedData, setZoomedData] = useState<typeof dailyData | null>(null);
+  const [refLeft, setRefLeft] = useState<string | null>(null);
+  const [refRight, setRefRight] = useState<string | null>(null);
+
+  useEffect(() => { setFilteredData(dailyData); }, [stats]);
+  useEffect(() => { setZoomedData(null); }, [filteredData]);
+
+  const displayData = zoomedData ?? filteredData;
+  const isZoomed = zoomedData !== null;
+
+  const handleMouseDown = (e: any) => { if (e?.activeLabel) setRefLeft(e.activeLabel); };
+  const handleMouseMove = (e: any) => { if (refLeft && e?.activeLabel) setRefRight(e.activeLabel); };
+  const handleMouseUp = () => {
+    if (refLeft && refRight && refLeft !== refRight) {
+      const leftIdx = filteredData.findIndex((d) => d.date === refLeft);
+      const rightIdx = filteredData.findIndex((d) => d.date === refRight);
+      const [from, to] = leftIdx < rightIdx ? [leftIdx, rightIdx] : [rightIdx, leftIdx];
+      if (to - from > 1) setZoomedData(filteredData.slice(from, to + 1));
+    }
+    setRefLeft(null);
+    setRefRight(null);
+  };
+
+  const chartBarData = useMemo(() => {
+    const minBar = displayData.length > 0 ? Math.max(...displayData.map(d => Math.abs(d.value))) * 0.02 : 0.01;
+    return displayData.map((d) => ({ ...d, displayValue: Math.abs(d.value) < 0.0001 ? minBar : d.value }));
+  }, [displayData]);
+
+  const yExtreme = useMemo(() => {
+    if (displayData.length === 0) return 2;
+    return Math.ceil(Math.max(...displayData.map((d) => Math.abs(d.value))) * 1.1 * 10) / 10;
+  }, [displayData]);
+
+  return (
+    <section className="py-12 px-4 sm:px-6 relative" data-testid="section-daily-pnl">
+      <div className="max-w-5xl mx-auto">
+        <AnimatedSection>
+          <div className="text-center mb-10">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Ежедневный P&amp;L</h2>
+            <p className="text-muted-foreground text-sm max-w-lg mx-auto">Распределение ежедневной доходности стратегии</p>
+            <LiveDataBadge text="Реальные данные с торгового счёта" pulse={false} />
+            <div className="flex items-center justify-center gap-3 mt-4">
+              <TooltipProvider delayDuration={0}>
+                <UITooltip>
+                  <TooltipTrigger asChild>
+                    <a href={`/api/csv?strategy=${strategyKey}`} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/10 transition-all">
+                      <Download className="w-3.5 h-3.5" />
+                      Скачать CSV
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Данные обновляются ежедневно через API Binance</p></TooltipContent>
+                </UITooltip>
+                <UITooltip>
+                  <TooltipTrigger asChild>
+                    <a href={`/api/quantstats?strategy=${strategyKey}`} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/10 transition-all">
+                      <FileText className="w-3.5 h-3.5" />
+                      QuantStats Report
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent><p>Данные обновляются ежедневно через API Binance</p></TooltipContent>
+                </UITooltip>
+              </TooltipProvider>
+            </div>
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection delay={100}>
+          <Card className="bg-card/50 backdrop-blur-sm border-border/50 p-4 sm:p-6">
+            {isLoading || dailyData.length === 0 ? (
+              <Skeleton className="h-[300px] w-full" />
+            ) : (
+              <>
+                <ChartPeriodFilter allData={dailyData} onFilter={setFilteredData} />
+                {isZoomed && (
+                  <div className="flex justify-end mb-2">
+                    <Button variant="outline" size="sm" className="text-xs border-border/50" onClick={() => setZoomedData(null)}>
+                      Сбросить zoom
+                    </Button>
+                  </div>
+                )}
+                <div className="h-[250px] sm:h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={chartBarData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
+                      onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
+                      <XAxis dataKey="date" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                        tickLine={false} axisLine={{ stroke: "hsl(var(--border))" }}
+                        tickFormatter={(v: string) => {
+                          const d = new Date(v + "T00:00:00");
+                          return d.toLocaleDateString("ru-RU", { month: "short", year: "2-digit" });
+                        }}
+                        interval={Math.max(0, Math.floor(displayData.length / 8) - 1)} />
+                      <YAxis tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
+                        tickLine={false} axisLine={false}
+                        tickFormatter={(v: number) => `${v > 0 ? "+" : ""}${v.toFixed(1)}%`}
+                        domain={[-yExtreme, yExtreme]} />
+                      <Tooltip
+                        contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }}
+                        formatter={(value: number) => [`${value >= 0 ? "+" : ""}${value.toFixed(4)}%`, "P&L"]}
+                        labelFormatter={(label: string) => new Date(label + "T00:00:00").toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })} />
+                      {refLeft && refRight && (
+                        <ReferenceArea x1={refLeft} x2={refRight} strokeOpacity={0.3} fill="rgba(6,182,212,0.08)" />
+                      )}
+                      <Bar dataKey="displayValue" radius={[2, 2, 0, 0]}>
+                        {chartBarData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.value >= 0 ? "#10b981" : "#ef4444"} fillOpacity={0.85} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </>
+            )}
+          </Card>
+        </AnimatedSection>
+      </div>
+    </section>
+  );
+}
+
+// ── Capital Growth ────────────────────────────────────────────────────────────
+function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
+  const equityData = stats?.equity ?? [];
+  const [startCapital, setStartCapital] = useState(10000);
+  const [inputValue, setInputValue] = useState("10000");
+
+  const presets = [
+    { label: "$1K", value: 1000 },
+    { label: "$5K", value: 5000 },
+    { label: "$10K", value: 10000 },
+    { label: "$50K", value: 50000 },
+    { label: "$100K", value: 100000 },
+  ];
+
+  const growthData = useMemo(() => {
+    if (equityData.length === 0) return [];
+    const base = equityData[0].value;
+    return equityData.map((d) => ({
+      date: d.date,
+      value: startCapital * (d.value / base),
+    }));
+  }, [equityData, startCapital]);
+
+  const currentValue = growthData.length > 0 ? growthData[growthData.length - 1].value : startCapital;
+  const profit = currentValue - startCapital;
+  const profitPct = startCapital > 0 ? (profit / startCapital) * 100 : 0;
+
+  function fmtValue(v: number) {
+    if (v >= 1_000_000) return "$" + (v / 1_000_000).toFixed(2) + "M";
+    if (v >= 1_000) return "$" + Math.round(v / 1_000) + "K";
+    return "$" + Math.round(v);
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/[^0-9]/g, "");
+    setInputValue(raw);
+    const num = parseInt(raw, 10);
+    if (!isNaN(num) && num > 0) setStartCapital(num);
+  };
+
+  return (
+    <section className="py-12 px-4 sm:px-6 relative" data-testid="section-capital-growth">
+      <div className="max-w-5xl mx-auto">
+        <AnimatedSection>
+          <div className="text-center mb-10">
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Рост капитала</h2>
+            <p className="text-muted-foreground text-sm max-w-lg mx-auto">
+              Введите свою сумму и посмотрите как рос бы ваш капитал вместе со стратегией
+            </p>
+            <LiveDataBadge text="На основе реальных торговых данных" pulse={false} />
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection delay={100}>
+          <Card className="p-6 sm:p-8 bg-card/50 backdrop-blur-sm border-border/50">
+            <div className="mb-6">
+              <p className="text-sm text-muted-foreground text-center mb-4">Начальный капитал</p>
+              <div className="flex flex-wrap justify-center gap-2 mb-4">
+                {presets.map((p) => (
+                  <button key={p.label} onClick={() => { setStartCapital(p.value); setInputValue(String(p.value)); }}
+                    className={`px-4 py-2 rounded-md text-sm font-semibold transition-all ${
+                      startCapital === p.value
+                        ? "bg-gradient-to-r from-cyan-600/80 to-blue-700/80 text-white"
+                        : "bg-background/50 border border-border/50 text-muted-foreground hover:text-foreground hover:border-cyan-500/40"
+                    }`}>
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-muted-foreground text-sm">$</span>
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  className="w-36 px-3 py-2 rounded-md border border-border/50 bg-background/50 text-foreground text-sm font-mono text-center focus:outline-none focus:border-cyan-500/60"
+                  placeholder="Своя сумма"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-3 mb-6">
+              <Card className="p-4 bg-background/50 border-border/30 text-center">
+                <p className="text-xs text-muted-foreground mb-1">Начальный капитал</p>
+                <p className="text-xl font-bold font-mono text-foreground">{fmtValue(startCapital)}</p>
+              </Card>
+              <Card className="p-4 bg-background/50 border-border/30 text-center">
+                <p className="text-xs text-muted-foreground mb-1">Текущая стоимость</p>
+                <p className="text-xl font-bold font-mono text-blue-400">{fmtValue(currentValue)}</p>
+              </Card>
+              <Card className="p-4 bg-background/50 border-border/30 text-center">
+                <p className="text-xs text-muted-foreground mb-1">Прибыль / Убыток</p>
+                <p className={`text-xl font-bold font-mono ${profit >= 0 ? "text-cyan-400" : "text-red-400"}`}>
+                  {profit >= 0 ? "+" : ""}{fmtValue(Math.abs(profit))}
+                </p>
+                <p className={`text-xs font-mono ${profit >= 0 ? "text-cyan-400/70" : "text-red-400/70"}`}>
+                  {profit >= 0 ? "+" : ""}{profitPct.toFixed(2)}%
+                </p>
+              </Card>
+            </div>
+
+            {isLoading || growthData.length === 0 ? (
+              <Skeleton className="h-[250px] w-full" />
+            ) : (
+              <div className="h-[250px] sm:h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={growthData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="capitalGrowthGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
+                    <XAxis dataKey="date" tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }} tickLine={false}
+                      axisLine={{ stroke: "hsl(var(--border))" }}
+                      tickFormatter={(v: string) => new Date(v + "T00:00:00").toLocaleDateString("ru-RU", { month: "short", year: "2-digit" })}
+                      interval={Math.max(0, Math.floor(growthData.length / 6) - 1)} />
+                    <YAxis tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }} tickLine={false} axisLine={false}
+                      tickFormatter={(v: number) => fmtValue(v)} />
+                    <Tooltip
+                      contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }}
+                      formatter={(value: number) => [fmtValue(value), "Капитал"]}
+                      labelFormatter={(label: string) => new Date(label + "T00:00:00").toLocaleDateString("ru-RU", { month: "long", year: "numeric" })} />
+                    <Area type="monotone" dataKey="value" stroke="#06b6d4" strokeWidth={2}
+                      fill="url(#capitalGrowthGrad)" dot={false} activeDot={{ r: 4, fill: "#06b6d4" }} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+          </Card>
+        </AnimatedSection>
+      </div>
+    </section>
+  );
+}
+
 function EquityChartSection({ stats, isLoading, strategyKey }: { stats?: StatsData; isLoading: boolean; strategyKey: StrategyKey }) {
   const equityRaw = stats?.equity ?? [];
   const [filteredData, setFilteredData] = useState(equityRaw);
@@ -1159,12 +1564,15 @@ function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: bo
                 <h3 className="text-sm font-semibold text-foreground">Статистика результатов</h3>
               </div>
               <div className="p-4 space-y-0">
-                {resultStats.map((item) => (
-                  <div key={item.label} className="flex items-center justify-between py-3 border-b border-border/20 last:border-0">
-                    <span className="text-sm text-muted-foreground">{item.label}</span>
-                    <span className="text-sm font-mono font-medium text-foreground">{item.value}</span>
-                  </div>
-                ))}
+                {resultStats.map((item) => {
+                  const isNegative = typeof item.value === 'string' && item.value !== '—' && (item.value.startsWith('-') || (parseFloat(item.value) < 0));
+                  return (
+                    <div key={item.label} className="flex items-center justify-between py-3 border-b border-border/20 last:border-0">
+                      <span className="text-sm text-muted-foreground">{item.label}</span>
+                      <span className={`text-sm font-mono font-medium ${isNegative ? 'text-red-400' : 'text-foreground'}`}>{item.value}</span>
+                    </div>
+                  );
+                })}
               </div>
             </Card>
           </AnimatedSection>
@@ -1445,8 +1853,12 @@ export default function Home() {
       <ExchangesBar />
       <SocialProofBar />
 
+      <StrategyOverviewSection sc={sc} />
       <EquityChartSection stats={stats ?? undefined} isLoading={isLoading} strategyKey={strategy} />
+      <DrawdownChartSection stats={stats ?? undefined} isLoading={isLoading} />
       <MetricsSection stats={stats ?? undefined} isLoading={isLoading} strategyKey={strategy} />
+      <DailyPnlSection stats={stats ?? undefined} isLoading={isLoading} strategyKey={strategy} />
+      <CapitalGrowthSection stats={stats ?? undefined} isLoading={isLoading} />
       <ResultsSection stats={stats ?? undefined} isLoading={isLoading} />
 
       <section className="py-12 px-4 sm:px-6 relative" data-testid="section-strategy">
@@ -1587,7 +1999,7 @@ export default function Home() {
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20 min-w-[200px] cta-pulse transition-all"
+              className="bg-gradient-to-r from-cyan-600/80 to-blue-700/80 text-white shadow-lg shadow-cyan-500/10 min-w-[200px] cta-pulse transition-all"
               onClick={() => window.open("https://t.me/etheremax", "_blank")}
             >
               <Send className="w-4 h-4 mr-2" />
