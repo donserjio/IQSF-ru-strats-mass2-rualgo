@@ -277,9 +277,14 @@ function ParticleCanvas() {
 }
 
 const NAV_ITEMS = [
-  { label: "Результаты", href: "#results" },
+  { label: "О стратегии", href: "#strategy" },
+  { label: "Эквити", href: "#equity" },
+  { label: "Просадка", href: "#drawdown-chart" },
   { label: "Показатели", href: "#metrics" },
-  { label: "Как это работает", href: "#how-it-works" },
+  { label: "P&L", href: "#daily-pnl" },
+  { label: "Рост капитала", href: "#capital-growth" },
+  { label: "Результаты", href: "#results" },
+  { label: "Условия", href: "#terms" },
   { label: "FAQ", href: "#faq" },
 ];
 
@@ -1138,7 +1143,7 @@ function DrawdownChartSection({ stats, isLoading }: { stats?: StatsData; isLoadi
   }, [stats]);
 
   return (
-    <section className="py-12 px-4 sm:px-6 relative" data-testid="section-drawdown-chart">
+    <section id="drawdown-chart" className="py-12 px-4 sm:px-6 relative" data-testid="section-drawdown-chart">
       <div className="max-w-5xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-10">
@@ -1215,7 +1220,7 @@ function DailyPnlSection({ stats, isLoading, strategyKey }: { stats?: StatsData;
   }, [displayData]);
 
   return (
-    <section className="py-12 px-4 sm:px-6 relative" data-testid="section-daily-pnl">
+    <section id="daily-pnl" className="py-12 px-4 sm:px-6 relative" data-testid="section-daily-pnl">
       <div className="max-w-5xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-10">
@@ -1344,7 +1349,7 @@ function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoadi
   };
 
   return (
-    <section className="py-12 px-4 sm:px-6 relative" data-testid="section-capital-growth">
+    <section id="capital-growth" className="py-12 px-4 sm:px-6 relative" data-testid="section-capital-growth">
       <div className="max-w-5xl mx-auto">
         <AnimatedSection>
           <div className="text-center mb-10">
