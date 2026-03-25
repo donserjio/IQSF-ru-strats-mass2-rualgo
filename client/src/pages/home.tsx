@@ -1113,7 +1113,7 @@ function StrategyOverviewSection({ sc }: { sc: StrategyConfig }) {
               <div className="mt-auto grid grid-cols-2 gap-3">
                 {[
                   { val: "12+", desc: "Лет исследований" },
-                  { val: sc.key === "basket70tf" ? "3" : "2", desc: "Типа подхода" },
+                  { val: sc.key === "basket70tf" ? "3" : "2", desc: "Типа стратегий" },
                   { val: "2", desc: "Торговых пары" },
                   { val: "24/7", desc: "Автоматически" },
                 ].map((s) => (
