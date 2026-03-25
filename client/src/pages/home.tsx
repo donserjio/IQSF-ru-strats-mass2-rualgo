@@ -1484,8 +1484,8 @@ function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoadi
               </Card>
               <Card className="p-4 bg-background/50 border-border/30 text-center h-[88px] flex flex-col justify-center">
                 <p className="text-xs text-muted-foreground mb-2">По состоянию на</p>
-                <p className="text-base sm:text-lg font-bold font-mono text-muted-foreground">
-                  {currentDate ? new Date(currentDate).toLocaleDateString("ru-RU", { month: "short", year: "numeric" }) : "—"}
+                <p className="text-base sm:text-lg font-bold font-mono text-muted-foreground whitespace-nowrap">
+                  {currentDate ? new Date(currentDate).toLocaleDateString("ru-RU", { month: "short", year: "2-digit" }) : "—"}
                 </p>
               </Card>
             </div>
