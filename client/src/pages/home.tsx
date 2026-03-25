@@ -993,11 +993,10 @@ function ZoomableChart({
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" vertical={yearlyTicks} />
             <XAxis
               dataKey="date"
-              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 9, angle: -35, textAnchor: "end", dy: 4 }}
+              tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10 }}
               tickLine={false}
               axisLine={{ stroke: "hsl(var(--border))" }}
-              height={36}
-              minTickGap={20}
+              minTickGap={40}
               tickFormatter={(v: string) => {
                 const d = new Date(v);
                 if (isZoomed) return d.toLocaleDateString(locale, { month: "short", year: "2-digit" });
