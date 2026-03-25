@@ -279,13 +279,10 @@ function ParticleCanvas() {
 const NAV_ITEMS = [
   { label: "О стратегии", href: "#strategy" },
   { label: "Эквити", href: "#equity" },
-  { label: "Просадка", href: "#drawdown-chart" },
   { label: "Показатели", href: "#metrics" },
   { label: "P&L", href: "#daily-pnl" },
   { label: "Рост капитала", href: "#capital-growth" },
-  { label: "Результаты", href: "#results" },
   { label: "Условия", href: "#terms" },
-  { label: "FAQ", href: "#faq" },
 ];
 
 const STRATEGY_OPTIONS: { key: StrategyKey; label: string }[] = [
