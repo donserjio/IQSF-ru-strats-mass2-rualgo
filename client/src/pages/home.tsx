@@ -1776,7 +1776,7 @@ function ResultsSection({ stats, isLoading }: { stats?: StatsData; isLoading: bo
 }
 
 const ACCESS_TERMS_BASE = [
-  { label: "Мин. сумма", value: "$500" },
+  { label: "Мин. сумма", value: "$20,000" },
   { label: "Комиссия за управление", value: "0%" },
   { label: "Комиссия за результат", value: "30%" },
   { label: "High-water mark", value: "Применяется" },
@@ -1839,7 +1839,7 @@ function buildFaqItems(sc: StrategyConfig) {
     },
     {
       q: "Минимальная сумма?",
-      a: "Минимум — $500. Поддерживаем все основные криптобиржи.",
+      a: "Минимум — $20 000. Поддерживаем все основные криптобиржи.",
     },
     {
       q: "Какие комиссии?",
@@ -2118,7 +2118,7 @@ export default function Home() {
           </AnimatedSection>
           <div className="flex flex-col sm:grid sm:grid-cols-3 gap-3 sm:gap-6">
             {[
-              { step: "01", title: "Откройте счёт на бирже", desc: "Binance, OKX, Bybit, Bitget, BingX. Минимум — $500." },
+              { step: "01", title: "Откройте счёт на бирже", desc: "Binance, OKX, Bybit, Bitget, BingX. Минимум — $20 000." },
               { step: "02", title: "Свяжитесь с нами", desc: "Telegram / WhatsApp. Подключение через API-ключ за 10 минут." },
               { step: "03", title: "Алгоритм работает за вас", desc: "24/7 торговля. 30% от прибыли. Без lock-up." },
             ].map((item) => (
