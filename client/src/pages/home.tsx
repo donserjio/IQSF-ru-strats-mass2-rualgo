@@ -139,16 +139,16 @@ function useInView(threshold = 0.15) {
 
 function LiveDataBadge({ text, pulse = true }: { text: string; pulse?: boolean }) {
   return (
-    <div className="mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-emerald-500/25">
+    <div className="mt-4 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">
       {pulse ? (
         <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
         </span>
       ) : (
-        <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500/80"></span>
+        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500/80"></span>
       )}
-      <span className="text-xs font-medium text-cyan-400">{text}</span>
+      <span className="text-xs font-medium text-emerald-400">{text}</span>
     </div>
   );
 }
