@@ -1321,10 +1321,13 @@ function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoadi
 
   const growthData = useMemo(() => {
     if (equityData.length === 0) return [];
-    const base = equityData[0].value;
+    // Найти первую ненулевую базовую точку
+    const basePoint = equityData.find((d) => d.value !== 0 && isFinite(d.value));
+    if (!basePoint) return [];
+    const base = basePoint.value;
     return equityData.map((d) => ({
       date: d.date,
-      value: startCapital * (d.value / base),
+      value: isFinite(d.value) && base !== 0 ? startCapital * (d.value / base) : startCapital,
     }));
   }, [equityData, startCapital]);
 
@@ -1333,6 +1336,7 @@ function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoadi
   const profitPct = startCapital > 0 ? (profit / startCapital) * 100 : 0;
 
   function fmtValue(v: number) {
+    if (!isFinite(v) || isNaN(v)) return "—";
     if (v >= 1_000_000) return "$" + (v / 1_000_000).toFixed(2) + "M";
     if (v >= 1_000) return "$" + Math.round(v / 1_000) + "K";
     return "$" + Math.round(v);
