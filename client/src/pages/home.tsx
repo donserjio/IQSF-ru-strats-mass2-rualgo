@@ -787,7 +787,7 @@ function ChartPeriodFilter({
     if (!rebaseOnFilter || slice.length === 0) return slice;
     if (additiveRebase) {
       const base = slice[0].value;
-      return slice.map((d) => ({ ...d, value: parseFloat((d.value - base).toFixed(4)) }));
+      return slice.map((d) => ({ ...d, value: Math.min(0, parseFloat((d.value - base).toFixed(4))) }));
     }
     const baseMul = 1 + slice[0].value / 100;
     return slice.map((d) => ({ ...d, value: parseFloat((((1 + d.value / 100) / baseMul - 1) * 100).toFixed(4)) }));
