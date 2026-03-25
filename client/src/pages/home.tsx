@@ -1351,13 +1351,13 @@ function DailyPnlSection({ stats, isLoading, strategyKey }: { stats?: StatsData;
                 )}
                 <div className="h-[250px] sm:h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={chartBarData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
+                    <BarChart data={chartBarData} margin={{ top: 10, right: 10, left: 10, bottom: 20 }}
                       onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
                       <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
                       <XAxis dataKey="date"
                         tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 9, angle: -35, textAnchor: "end", dy: 4 }}
                         tickLine={false} axisLine={{ stroke: "hsl(var(--border))" }}
-                        height={36}
+                        height={48}
                         tickFormatter={(v: string) => {
                           const d = new Date(v + "T00:00:00");
                           return d.toLocaleDateString("ru-RU", { month: "short", year: "2-digit" });
