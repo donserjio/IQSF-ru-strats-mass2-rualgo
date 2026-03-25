@@ -1995,7 +1995,7 @@ export default function Home() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 mb-8 text-sm text-muted-foreground max-w-xs sm:max-w-md mx-auto">
             {[
-              "7 лет опыта",
+              "8 лет опыта",
               "Тысячи аккаунтов",
               "Прозрачная статистика",
               "Подключение за 10 минут",
