@@ -1308,18 +1308,17 @@ function DailyPnlSection({ stats, isLoading, strategyKey }: { stats?: StatsData;
 // ── Capital Growth ────────────────────────────────────────────────────────────
 function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoading: boolean }) {
   const equityData = stats?.equity ?? [];
-  const [startCapital, setStartCapital] = useState(10000);
-  const [inputValue, setInputValue] = useState("10000");
+  const [startCapital, setStartCapital] = useState(300000);
   const [filteredEquity, setFilteredEquity] = useState(equityData);
 
   useEffect(() => { setFilteredEquity(equityData); }, [stats]);
 
   const presets = [
-    { label: "$1K", value: 1000 },
-    { label: "$5K", value: 5000 },
-    { label: "$10K", value: 10000 },
-    { label: "$50K", value: 50000 },
-    { label: "$100K", value: 100000 },
+    { label: "$300K", value: 300000 },
+    { label: "$500K", value: 500000 },
+    { label: "$1M", value: 1000000 },
+    { label: "$2M", value: 2000000 },
+    { label: "$5M", value: 5000000 },
   ];
 
   const growthData = useMemo(() => {
@@ -1351,13 +1350,6 @@ function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoadi
     return "$" + Math.round(v);
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value.replace(/[^0-9]/g, "");
-    setInputValue(raw);
-    const num = parseInt(raw, 10);
-    if (!isNaN(num) && num > 0) setStartCapital(num);
-  };
-
   return (
     <section id="capital-growth" className="py-12 px-4 sm:px-6 relative" data-testid="section-capital-growth">
       <div className="max-w-5xl mx-auto">
@@ -1365,7 +1357,7 @@ function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoadi
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">Рост капитала</h2>
             <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-              Введите свою сумму и посмотрите как рос бы ваш капитал вместе со стратегией
+              Выберите сумму и посмотрите как рос бы ваш капитал вместе со стратегией
             </p>
             <LiveDataBadge text="На основе реальных торговых данных" pulse={false} />
           </div>
@@ -1377,7 +1369,7 @@ function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoadi
               <p className="text-sm text-muted-foreground text-center mb-4">Начальный капитал</p>
               <div className="flex flex-wrap justify-center gap-2 mb-4">
                 {presets.map((p) => (
-                  <button key={p.label} onClick={() => { setStartCapital(p.value); setInputValue(String(p.value)); }}
+                  <button key={p.label} onClick={() => setStartCapital(p.value)}
                     className={`px-4 py-2 rounded-md text-sm font-semibold transition-all ${
                       startCapital === p.value
                         ? "bg-gradient-to-r from-cyan-600/80 to-blue-700/80 text-white"
@@ -1386,16 +1378,6 @@ function CapitalGrowthSection({ stats, isLoading }: { stats?: StatsData; isLoadi
                     {p.label}
                   </button>
                 ))}
-              </div>
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-muted-foreground text-sm">$</span>
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={handleInputChange}
-                  className="w-36 px-3 py-2 rounded-md border border-border/50 bg-background/50 text-foreground text-sm font-mono text-center focus:outline-none focus:border-cyan-500/60"
-                  placeholder="Своя сумма"
-                />
               </div>
             </div>
 
