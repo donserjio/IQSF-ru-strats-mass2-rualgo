@@ -358,16 +358,16 @@ function Navbar({ strategy, onStrategyChange }: { strategy: StrategyKey; onStrat
             ))}
             <Button
               size="sm"
-              className="ml-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs"
+              className="ml-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs w-[120px]"
               onClick={() => window.open("https://t.me/etheremax", "_blank")}
               data-testid="button-nav-contact"
             >
               <Send className="w-3 h-3 mr-1.5" />
-              Свяжитесь с нами
+              Telegram
             </Button>
             <Button
               size="sm"
-              className="bg-[#25D366] hover:bg-[#1fb855] text-white text-xs"
+              className="bg-[#25D366] hover:bg-[#1fb855] text-white text-xs w-[120px]"
               onClick={() => window.open("https://wa.me/48883750965", "_blank")}
               data-testid="button-nav-whatsapp"
             >
