@@ -2290,10 +2290,10 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-cyan-600/80 to-blue-700/80 text-white shadow-lg shadow-cyan-500/10 min-w-[200px] cta-pulse transition-all"
+              className="bg-gradient-to-r from-cyan-600/80 to-blue-700/80 text-white shadow-lg shadow-cyan-500/10 w-[260px] cta-pulse transition-all"
               onClick={() => window.open("https://t.me/etheremax", "_blank")}
             >
               <Send className="w-4 h-4 mr-2" />
@@ -2301,7 +2301,7 @@ export default function Home() {
             </Button>
             <Button
               size="lg"
-              className="bg-[#25D366] hover:bg-[#1fb855] text-white shadow-lg shadow-green-500/20 min-w-[200px]"
+              className="bg-[#25D366] hover:bg-[#1fb855] text-white shadow-lg shadow-green-500/20 w-[260px]"
               onClick={() => window.open("https://wa.me/48883750965", "_blank")}
             >
               <SiWhatsapp className="w-4 h-4 mr-2" />
