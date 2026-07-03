@@ -786,8 +786,18 @@ function ChartPeriodFilter({
   function maybeRebase(slice: { date: string; value: number }[]) {
     if (!rebaseOnFilter || slice.length === 0) return slice;
     if (additiveRebase) {
-      const base = slice[0].value;
-      return slice.map((d) => ({ ...d, value: Math.min(0, parseFloat((d.value - base).toFixed(4))) }));
+      // Drawdown chart: recompute the drawdown *within* the window. The peak resets
+      // to the running maximum inside the selected period, not the first point —
+      // otherwise a period that starts mid-recovery understates the true in-window
+      // drawdown. Series is drawdown vs the all-time peak, so ratio = 1 + value/100
+      // is equity relative to that peak. (This branch is used only by the drawdown
+      // chart.)
+      let peakRatio = 0;
+      return slice.map((d) => {
+        const ratio = 1 + d.value / 100;
+        if (ratio > peakRatio) peakRatio = ratio;
+        return { ...d, value: parseFloat((Math.min(0, (ratio / peakRatio - 1) * 100)).toFixed(4)) };
+      });
     }
     const baseMul = 1 + slice[0].value / 100;
     return slice.map((d) => ({ ...d, value: parseFloat((((1 + d.value / 100) / baseMul - 1) * 100).toFixed(4)) }));
